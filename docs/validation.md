@@ -9,7 +9,7 @@ Checked locally on 2026-10-18, macOS, against the public package.
 | Skill frontmatter | Checked with the local skill validator |
 | Relative Markdown file links | Checked against repository files |
 | Public package text and DOCX XML | Scanned for local paths, client names and credential-like content |
-| GitHub Actions | Linux / Python 3.10 and 3.12 workflow provided; inspect the actual run on the repository |
+| GitHub Actions | Linux / Python 3.10 and 3.12 both passed: [run 39135305886](https://github.com/ccygod/artifact-template-wps/actions/runs/39135305886) |
 
 ## Document-specific evidence
 
