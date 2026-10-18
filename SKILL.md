@@ -1,6 +1,6 @@
 ---
-name: artifact-template-wps
-description: "用户选择公文格式skill、要求WPS兼容DOCX格式，或明确调用$artifact-template-wps时使用，依据保留母版处理文档并完成验收。"
+name: official-document-format
+description: "用户选择公文格式skill、要求WPS兼容DOCX格式，或明确调用$official-document-format时使用，依据保留母版处理文档并完成验收。"
 ---
 
 # 公文格式skill

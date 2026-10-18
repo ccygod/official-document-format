@@ -23,6 +23,15 @@ class ReleasePipelineTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             result=checker.main(self.out,expected_half_points=28,expected_line_multiple=1.35,require_snap_to_grid_off=True,expected_before_lines=0,expected_after_lines=25,expected_table_after_lines=50)
         self.assertEqual(result,0)
+    def test_showcase_covers_five_heading_levels_figure_and_table_notes(self):
+        model=OOXMLModel(self.out);records=list(model.paragraphs())
+        roles={r['role'] for r in records}
+        self.assertTrue({f'heading-{i}' for i in range(1,6)} <= roles)
+        self.assertTrue(model.doc.xpath('.//*[local-name()="drawing"]'))
+        texts=[r['text'] for r in records]
+        self.assertTrue(any(t.startswith('图1 ') for t in texts))
+        self.assertTrue(any(t.startswith('表1 ') for t in texts))
+        self.assertTrue(any(t.startswith('注：') for t in texts))
     def test_wrong_requested_size_is_rejected(self):
         with contextlib.redirect_stdout(io.StringIO()):result=checker.main(self.out,expected_half_points=24)
         self.assertEqual(result,1)

@@ -6,11 +6,11 @@
 
 ## 项目介绍
 
-我把自己设计并反复校正的公文样式整理成了开源技能artifact-template-wps。它将母版保留、标题编号、正文字号、段落缩进、表格语义、分页与渲染组织成可检查的工作流。
+我把自己设计并反复校正的公文样式整理成了开源技能official-document-format。它将母版保留、标题编号、正文字号、段落缩进、表格语义、分页与渲染组织成可检查的工作流。
 
 公开版提供通用模板、可执行虚构示例、WPS实际预览、格式检查和重复处理验证。样例身份已替换，不分发字体文件；具体提交仍以当前单位和项目要求为准。
 
-https://github.com/ccygod/artifact-template-wps
+https://github.com/ccygod/official-document-format
 
 ## 短帖
 
