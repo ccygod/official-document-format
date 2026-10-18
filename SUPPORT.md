@@ -1,5 +1,5 @@
-# Support
+# 使用帮助
 
-Use GitHub Issues for reproducible bugs and GitHub Discussions for usage questions. Include your OS, Python version, agent host, command, expected outcome and a minimal fictional example. Remove names, internal paths, credentials and private text before posting.
+可复现问题请提交GitHub议题，使用讨论请进入仓库Discussions。请注明操作系统、Python版本、智能体宿主、发布版本、执行命令与预期结果，并提供最小虚构样例。
 
-Skill activation depends on your agent host. A model response saying it followed the skill is not proof that all checks or rendering ran. Share the actual command output when relevant.
+技能是否被发现和调用取决于宿主。模型说“已经使用”不能代替实际检查回执。需要排查时请提供已脱敏的命令结果；发帖前删除客户文件、私人路径、账号与凭据。

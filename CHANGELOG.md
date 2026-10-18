@@ -1,5 +1,13 @@
-# Changelog
+# 更新记录
 
-## 1.0.0 — 2026-10-18
+## 1.0.1 · 2026年10月18日
 
-First public release. Preserves the existing skill and adds portable public packaging, English/Chinese documentation, installation support, original release artwork, examples, attribution, compatibility notes and CI. Public artifacts omit private source material; see NOTICE.md.
+- 发布说明统一为中文，主页面直接展示中文说明。
+- 取消独立英文介绍与双语导航，封面和分享图改用中文。
+- 技能入口、帮助、贡献说明、示例说明及发布文案使用中文。
+- 保留项目标识、文件名、代码参数和必要来源名称。
+- 保留现有功能与测试，继续提供可安装下载包及校验文件。
+
+## 1.0.0 · 2026年10月18日
+
+首次公开发布已有技能，提供说明、安装器、示例、来源说明和自动测试。当前推荐使用1.0.1中文发布版。

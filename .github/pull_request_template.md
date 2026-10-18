@@ -1,5 +1,5 @@
-## Problem and resulting behavior
+## 问题与改动后的行为
 
-## Validation
+## 实际验证
 
-List actual commands and their results. Distinguish structural, rendered and human-reviewed evidence.
+请列出运行命令与结果，区分结构检查、页面渲染和人工内容判断。

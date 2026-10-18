@@ -1,7 +1,11 @@
-# Contributing
+# 贡献指南
 
-Thanks for helping improve artifact-template-wps. Start with a concrete failure: the request, a minimal synthetic input, expected behavior, and what actually happened. Keep private documents out of issues.
+欢迎用具体问题改进这个技能。请提供请求、最小虚构输入、预期结果与实际结果，不要提交客户材料、个人信息或密钥。
 
-Use Python 3.10+ and install `requirements.txt`. Run `python3 -m unittest discover -s scripts -p 'test_*.py' -v`. Add a regression that checks behavior before changing a script. For instruction changes, include a realistic example and say what you reviewed; a structural PASS does not establish writing quality or rendering.
+使用Python 3.10及以上版本，先安装requirements.txt，再运行：
 
-Small, focused pull requests are easiest to review. Preserve explicit user constraints and existing template structures. Cite external ideas and never bundle proprietary fonts or customer material.
+```bash
+python3 -m unittest discover -s scripts -p 'test_*.py' -v
+```
+
+修改脚本时补上行为回归；修改技能说明时提供真实场景的虚构示例，说明人工审阅了什么。结构检查通过不代表文字、听众效果或渲染已通过。请保留用户明确要求及既有模板结构，注明引用来源，不打包商业字体。

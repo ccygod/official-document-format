@@ -1,20 +1,12 @@
-# Release validation — v1.0.0
+# 1.0.1 中文发布验证记录
 
-Checked locally on 2026-10-18, macOS, against the public package.
+本地核查日期：2026年10月18日。
 
-| Check | Observed result |
-| --- | --- |
-| Python regression suite | 8 tests passed |
-| Fresh installation and existing-directory protection | Covered by three installation tests |
-| Skill frontmatter | Checked with the local skill validator |
-| Relative Markdown file links | Checked against repository files |
-| Public package text and DOCX XML | Scanned for local paths, client names and credential-like content |
-| GitHub Actions | Linux / Python 3.10 and 3.12 both passed: [run 39135305886](https://github.com/ccygod/artifact-template-wps/actions/runs/39135305886) |
+- 回归测试：8项通过。
+- 安装器：新目录安装、拒绝覆盖已有安装、拒绝装入源目录内部均有测试。
+- 技能元数据与本地Markdown文件链接已检查。
+- 中文版保留脚本功能，主说明、封面、技能说明、帮助和发布素材改为中文。
+- GitHub自动测试覆盖Linux下Python 3.10和3.12，以仓库实际运行回执为准。
+- 公开包未包含私人会话、客户文件或嵌入字体；技术标识及标准许可证保持原形式。
 
-## Document-specific evidence
-
-The fictional demo passes the declared body-size, spacing, grid and table/heading checks. Package changes are confined to document.xml, styles.xml and numbering.xml. A second normalization pass has an identical semantic snapshot. A deliberately wrong body size is rejected.
-
-The sanitized style template rendered to three pages, and the completed fictional demo rendered to one page in WPS on macOS. Every resulting page was inspected. The README preview is derived from that actual fictional demo. This does not establish identical layout on Windows, Microsoft Word or another font installation.
-
-Public distribution intentionally differs from the private reference: generic text and cleaned identity metadata, no embedded font binary. The original installed reference remains unchanged.
+虚构示例通过正文四号、1.35倍行距、网格和表格语义检查；包变更限定在document.xml、styles.xml与numbering.xml；第二次处理语义快照一致；错误字号会被拒绝。公开母版3页、虚构成品1页均在macOS WPS渲染并看图检查。1.0.1没有改变母版或示例文档，继续沿用这些页面证据，不承诺跨软件与跨字体环境页貌完全一致。

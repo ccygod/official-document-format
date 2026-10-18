@@ -1,25 +1,21 @@
-# Official Document Skill launch kit
+# 发布文案
 
-## One line
+## 一句话介绍
 
-Carry a carefully designed Word/WPS template into every document you deliver.
+公文格式skill：把精心设计的公文样式，变成可复用、可检查的文档交付流程。
 
-## 中文介绍
+## 项目介绍
 
-我把自己设计并反复校正的公文样式整理成了开源 Skill：artifact-template-wps。它把母版保留、标题与编号字号、正文缩进、表格语义、分页和实际渲染组织成一个可检查的流程。
+我把自己设计并反复校正的公文样式整理成了开源技能artifact-template-wps。它将母版保留、标题编号、正文字号、段落缩进、表格语义、分页与渲染组织成可检查的工作流。
 
-公开版提供通用模板、可执行虚构示例、WPS实渲染预览、格式检查与重复处理验证。文档中的机构信息已替换，不分发字体文件。它是一套可复用样式体系，不代替具体单位的提交要求。
+公开版提供通用模板、可执行虚构示例、WPS实际预览、格式检查和重复处理验证。样例身份已替换，不分发字体文件；具体提交仍以当前单位和项目要求为准。
 
 https://github.com/ccygod/artifact-template-wps
 
-## English announcement
+## 短帖
 
-Official Document Skill packages a maintainer-designed Chinese Word/WPS style system into a reusable Agent Skill. It includes a public DOCX template, deterministic OOXML normalization, semantic and package checks, idempotence verification and an actual WPS-rendered demo.
+标题、编号、表格和分页，不能只靠一句“看着差不多”。公文格式skill已开源，附公开母版、可运行示例和检查脚本，帮助把排版细节落实到实际交付。
 
-## Short post
+## 图片素材
 
-Heading numbers, table roles and pagination deserve more than “looks fine.” I’ve released a Word/WPS formatting Skill with a public template, repeatable checks and a runnable demo: https://github.com/ccygod/artifact-template-wps
-
-## Sharing assets
-
-`assets/cover.png` for the README; `assets/social-preview.png` for a manually configured repository social preview. `assets/demo-preview.png` shows actual fictional WPS output. No external social posts are automated.
+assets/cover.png用于项目首页；assets/social-preview.png可手动配置为GitHub分享图。图片为原创发布图。本仓库不自动向外部社区发帖。

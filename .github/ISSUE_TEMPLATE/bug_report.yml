@@ -1,23 +1,23 @@
-name: Bug report
-description: Report a reproducible issue with a synthetic example
+name: 问题反馈
+description: 提供可复现问题与虚构样例
 body:
   - type: textarea
     id: environment
     attributes:
-      label: Environment
-      description: OS, Python, host, release version
+      label: 运行环境
+      description: 操作系统、Python、宿主、发布版本
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
-      label: Steps and synthetic input
-      description: No credentials, customer files, or personal data
+      label: 操作步骤与虚构输入
+      description: 不要包含账号、客户文件或个人数据
     validations:
       required: true
   - type: textarea
     id: outcome
     attributes:
-      label: Expected and actual outcome
+      label: 预期结果与实际结果
     validations:
       required: true

@@ -1,10 +1,10 @@
-name: Improvement
-description: Propose a change with a concrete use case
+name: 改进建议
+description: 用具体场景说明期望改进
 body:
   - type: textarea
     id: use_case
     attributes:
-      label: Use case and desired improvement
-      description: Explain the user outcome and an example
+      label: 使用场景与期望效果
+      description: 请给出例子和使用者希望获得的结果
     validations:
       required: true

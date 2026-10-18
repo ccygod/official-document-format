@@ -2742,7 +2742,7 @@
     "wpsCustomData"
   ],
   "public_release_notes": [
-    "Sample names and document properties sanitized.",
-    "Embedded font binary removed; install fonts separately."
+    "样例身份及文档属性已脱敏。",
+    "嵌入字体文件已移除，请自行合法安装所需字体。"
   ]
 }

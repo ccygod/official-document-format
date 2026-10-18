@@ -1,21 +1,19 @@
-# Compatibility and installation
+# 兼容性与安装
 
-These are Agent Skills: a `SKILL.md` entry plus references, scripts and optional assets. An agent host must discover or explicitly load the directory. The Python helper scripts can also be used directly.
+技能目录由SKILL.md入口、参考文件、脚本及素材组成。智能体宿主需要发现或显式加载该目录，Python脚本也可以独立执行。
 
-## Hosts
+## 宿主与目录
 
-- Codex: `python3 scripts/install_skill.py --host codex` copies to `~/.codex/skills/<repository-name>`.
-- Claude Code: `python3 scripts/install_skill.py --host claude` copies to `~/.claude/skills/<repository-name>`.
-- Other hosts: `python3 scripts/install_skill.py --dest /your/host/skills/<repository-name>`; follow that host’s discovery rules. Metadata under `agents/` is host-specific.
+- Codex：运行`python3 scripts/install_skill.py --host codex`，复制到`~/.codex/skills/仓库名`。
+- Claude Code：运行`python3 scripts/install_skill.py --host claude`，复制到`~/.claude/skills/仓库名`。
+- 其他宿主：通过`--dest`传入包含技能名称的目标目录，并按宿主规则加载。
 
-The installer refuses to overwrite an existing directory. Review updates against a backup of your own rules. No global settings are modified. To remove, delete only the directory installed by this project after preserving your changes.
+安装器遇到已有目录会停止，不覆盖用户修改，也不修改全局设置。更新前请对比并备份。卸载时仅移除该项目安装的目录，保留自己的修改。
 
-## Python
+## 运行条件
 
-Python 3.10+ is the supported baseline for this release. Install `requirements.txt` in your preferred virtual environment. The macOS release check is local evidence; GitHub Actions exercises the declared Linux Python matrix. Other native desktop combinations are not claimed as visually verified.
+本版支持Python 3.10及以上版本；在虚拟环境中安装requirements.txt即可运行相关脚本。GitHub自动测试覆盖Linux下Python 3.10和3.12；本地页面检查使用macOS WPS，不据此承诺其他平台页貌一致。
 
-## Optional tools
+Word交付需要文档编辑与渲染工具。Codex的Documents插件是一种选择，其他宿主可使用python-docx、直接OOXML编辑及合适的渲染器。PPT制作、生图、联网和WPS软件由外部提供，不包含在本包中。缺少必要能力时，应如实说明未验项。
 
-A DOCX writer and renderer are needed for Word deliverables. In Codex, Documents can provide these; another host can use python-docx or direct OOXML plus a suitable renderer. PowerPoint construction, web research, image generation and WPS Office are separate capabilities, not bundled services. If a required capability is unavailable, report the unverified step.
-
-For WPS-targeted output, use an authorized WPS installation to render. A LibreOffice preview is useful diagnostic evidence but does not establish WPS-specific pagination. Font names are style requests; font files must be legally installed locally.
+面向WPS的文档，应在合法安装的WPS中渲染。LibreOffice预览可作辅助诊断，不能代替WPS特有分页验收。字体名称是样式请求，不提供字体文件或相关授权。

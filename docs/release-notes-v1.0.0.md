@@ -1,10 +1,5 @@
-# artifact-template-wps v1.0.0
+# 1.0.0 历史发布说明
 
-First public release of the existing, actively refined skill.
+首次公开发布已有技能，提供入口、参考文件、脚本、安装器、示例与回归测试。
 
-- Full skill entry, references and local helpers.
-- English and Chinese guides, installation helper and original examples.
-- Branded cover, source attribution, compatibility notes and community templates.
-- CI regression checks and downloadable release bundle.
-
-See [validation](validation.md) for the checks actually performed. This release does not include model access, desktop applications or third-party fonts.
+当前已推出1.0.1中文发布版，请优先使用仓库首页推荐的最新版本。

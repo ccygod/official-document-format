@@ -1,3 +1,3 @@
-# Community conduct
+# 社区行为规范
 
-Be respectful and specific. Critique ideas and behavior, avoid personal attacks, and protect other people’s private information. The maintainer may edit or remove abusive content and restrict participation. For private concerns, use the contact routes on the maintainer’s GitHub profile.
+尊重参与者，围绕可核实的问题和行为讨论，避免人身攻击，保护他人隐私。维护者可移除滥用内容并限制不当参与；私密问题请通过作者GitHub主页联系。

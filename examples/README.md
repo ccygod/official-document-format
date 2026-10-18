@@ -1,5 +1,5 @@
-# Fictional document demo
+# 虚构文档示例
 
-`official-demo.docx` is the original fictional example shown in the README, normalized with a 14-point body and 1.35-line spacing and rendered in WPS on macOS. It includes title, headings, prose, table and footer.
+official-demo.docx是首页展示的原创虚构示例，按正文四号、1.35倍行距处理，并在macOS WPS中渲染，包含主标题、各级标题、正文、表格和页脚。
 
-Rebuild from the public template with `python3 examples/build_demo.py /tmp/input.docx`, then follow [the verification commands](../docs/verification.md). This demo builder is not a general-purpose content generator. All names and content are generic.
+可用`python3 examples/build_demo.py /tmp/input.docx`从公开母版重建，再按[验收步骤](../docs/verification.md)处理。构建器只生成该示例，不是通用方案生成器。

@@ -1,7 +1,7 @@
-# Attribution and distribution scope
+# 来源与分发说明
 
-Original project code, instructions, diagrams and documentation are distributed under the MIT license in this repository. Cited research, linked websites, third-party skills and external images keep their original rights; they are not relicensed by this repository. No endorsement or official affiliation is implied.
+本项目原创脚本、技能说明、文档及发布图按仓库LICENSE中的MIT许可证分发。参考研究、外部文章、第三方技能与链接图片保留原权利，不因本项目引用而改变许可；引用不意味着官方关联或认可。
 
-The `references/` directory contains source attribution and original editorial interpretations where applicable. A link, hash or reading declaration is not proof of a scientific effect. No external article body, customer document, private conversation or font binary is intentionally included.
+参考文件中的方法分析属于编辑归纳。来源链接、指纹或阅读声明不等于科学效果验证。公开包不分发外部文章全文、客户文件、私人会话或字体文件。
 
-The public `assets/reference.docx` is a distribution variant of the maintainer’s style template: sample institutions and project names were replaced, document identity metadata was cleaned, and the embedded font binary was removed. Style, numbering, section, footer and WPS extension parts remain. This is a reusable formatting profile, not a certification of compliance with every official-document standard.
+公开母版将机构、地区和项目名称替换为通用示例，清理身份元数据并移除嵌入字体，保留样式、编号、分节、页脚与WPS扩展。这是一套可复用排版体系，不是所有公文规范的认证。

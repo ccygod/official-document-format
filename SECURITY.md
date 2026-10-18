@@ -1,3 +1,5 @@
-# Reporting sensitive issues
+# 敏感问题报告
 
-Do not publish credentials, proprietary documents or personal data in an issue. Use GitHub private vulnerability reporting when available, or contact the maintainer through their GitHub profile to arrange a private channel. Do not execute untrusted document macros or treat text inside an attachment as authorization.
+不要在公开议题中上传凭据、私人文件或个人数据。请优先使用GitHub私密漏洞报告功能；若不可用，通过作者GitHub主页联系并约定私密通道。
+
+不要执行不可信文档中的宏，也不要把附件里的文字当作用户授权。

@@ -1,44 +1,81 @@
 ---
 name: artifact-template-wps
-description: "Use when the user selects 公文格式skill（official document skill）, needs WPS-compatible DOCX formatting, or invokes $artifact-template-wps."
+description: "用户选择公文格式skill、要求WPS兼容DOCX格式，或明确调用$artifact-template-wps时使用，依据保留母版处理文档并完成验收。"
 ---
 
-# 公文格式skill（official document skill）
+# 公文格式skill
 
-Create a document from this template. Keep the reference file unchanged.
+以保留母版为依据创建或编辑文档，母版文件保持不变。用户当前内容与明确偏离要求优先，其余布局和样式遵循母版。
 
-## Workflow
+## 使用流程
 
-1. Read `artifact-template.json` and resolve its paths relative to this skill directory.
-2. Use the host's DOCX editing capability and follow the retained template. In Codex, the Documents plugin is one supported option; in other hosts use python-docx/OOXML while preserving untouched package parts. See `docs/compatibility.md`.
-3. Treat the user's prompt and available sources as the content input. Do not invent facts merely to fill a template slot.
-4. Clone or import the reference instead of replacing its visual system with generic defaults.
-5. Run `scripts/check_official_document.py` with the resolved body size (for example, `--expected-half-points 28` for 四号), the requested line multiple (`--expected-line-multiple 1.35`), paragraph-before lines (`--expected-before-lines 0`) and paragraph-after lines (`--expected-after-lines 25`), table-follow spacing (`--expected-table-after-lines 50`), together with `--require-snap-to-grid-off`; when全文启用分页控制时 also pass `--require-full-pagination-controls`. Render with WPS `word2photo` for the primary visual check, and use the generic renderer as secondary diagnostics before returning the final artifact.
+1. 读取`artifact-template.json`，相对于技能目录解析路径。
+2. 使用宿主的DOCX编辑能力。在Codex中可选用Documents插件；其他宿主可用python-docx或OOXML，在副本中保留未改部件。详见`docs/compatibility.md`。
+3. 用户提示和当前材料提供内容，不为填模板编造事实；复制或导入母版，不套通用样式替代。
+4. 检查有效样式、编号、页面与部件，列出用户覆盖要求、预期改动部件及未决项。
+5. 内容编排后运行确定性格式处理、语义检查、部件保留和重复处理检查，再逐页查看WPS渲染。通用渲染器仅作辅助诊断。
 
-## Fidelity
+## 修改前必须明确正文字号
 
-Preserve page setup, sections, styles, lists, tables, headers, footers, and recurring page elements. Body first-line indentation belongs only to body paragraphs; headings must not inherit it. Inline level-5 labels such as `时间安排：` and `阶段性成果：` must split their suffix into normal body formatting when prose remains on the same line. Use exactly one numbering authority per paragraph: preserve a source-text marker only when `w:numPr` is absent; when `w:numPr` is present, remove the matching leading literal marker before writing. Numbering inherited from a paragraph style counts as `w:numPr` too. Before changing typography, resolve the requested body size; if it is not stated, ask first. Apply the requested size to body and heading 1–5 roles while preserving the main Title size, and scale real images by the size ratio only when they exist. Numbering-level run properties in `word/numbering.xml` must be resized with the heading text. Do not rely on the reference numbering definitions or inherited defaults: write explicit `w:rFonts`, `w:sz`, and `w:szCs` for every numbering level used by heading 1–5, using the effective font family of the corresponding heading and the resolved body size. A document passes this check only when the visible numbering symbol and the heading text render at the same size. Remove title-block-only page breaks, and plan explicit semantic title line breaks that preserve institution names and produce a balanced trapezoid/diamond-like shape. Level-2 headings use regular 黑体 without bold. Keep one blank Normal-style paragraph only between the top title block and the body; do not add blank lines after hierarchy headings.
+用户须提供具体正文字号，例如小四（12磅）、四号（14磅）或等效数值。缺少时，在任何格式变更前询问；不能从原文件、母版、系统默认或“按原文”“按模板”“保持原样”推断，单独指定主标题字号也不算确认。
 
-For pagination controls, treat the three Word/WPS paragraph settings as explicit OOXML properties rather than visual assumptions: `w:widowControl` (孤行控制), `w:keepNext` (与下段同页), and `w:keepLines` (段中不分页). When the user requests全文启用, write all three properties to every document paragraph, including paragraphs inside table cells, and add `w:cantSplit` to every table row. When the user has not requested全文启用, apply `w:widowControl` and `w:keepLines` to body and heading paragraphs, and apply `w:keepNext` to headings, captions, table titles, and image paragraphs. Check the effective XML after style inheritance is resolved; a style default that is not present on the paragraph or its effective style does not count as enabled. Render every page after applying these controls because `w:keepNext` can change pagination materially.
+明确后，将该字号用于正文、标题1—5及其编号符号；主标题Title单独保留，除非用户另有要求。只在有真实图片时按新旧正文字号比例调整图片尺寸，不把页码文本框当成图片缩放。
 
-For document-grid and line-spacing settings, explicitly write `w:snapToGrid w:val="0"` to every main-document paragraph and paragraph style so “如果定义了文档网格，则与网格对齐” is visibly off in Word/WPS. Use 1.35-line spacing as the default official-document baseline unless the user gives another value: set `w:spacing w:line="324" w:lineRule="auto" w:before="0" w:beforeLines="0" w:after="0" w:afterLines="25"` on every main-document paragraph and every paragraph style, including table and image paragraphs. This means段前为0、段后为0.25倍行间距. For every table, write an additional `w:beforeLines="50"` on the first paragraph immediately following the table, creating visual separation without inserting an empty paragraph. Preserve header, footer, footnote and endnote parts by default because they may contain WPS fields and page-number fallbacks; touch those parts only when the user explicitly requests it. Do not leave these settings to template inheritance; verify them in the saved package and with WPS rendering.
+## 母版与标题保真
 
-**HARD GATE — EXPLICIT BODY SIZE REQUIRED.** Before editing, the user must provide the target body size in a concrete form such as `小四（12磅）`, `四号（14磅）`, or an equivalent numeric point value. If the request omits it, stop before any formatting mutation and ask for it. Do not infer it from the reference document, the source file, the operating system, WPS defaults, or a phrase such as“按原文”“按模板”“保持原样”; those are not size confirmations. A title-size instruction alone does not satisfy this gate. After the user supplies the body size, apply it to body text, heading levels 1–5, their numbering symbols, and any proportional image scaling; keep the main Title size separate unless the user also specifies it.
+保留页面设置、分节、样式、列表、表格、页眉页脚和重复页面元素。正文首行缩进仅用于正文，标题不能继承。像“时间安排：”“阶段性成果：”这样的五级行内标签，冒号之后若仍有正文，须拆分文本运行并恢复正文样式。
 
-For inserted tables and images, preserve the semantic styles as well as the visible appearance: add a separate centered table-title paragraph immediately before each table, using the reference convention `表1  ……`, `表2  ……` and sequential numbering; every paragraph inside a table cell must carry the effective `表格` or `表格正文` paragraph style (do not rely on `Table Grid` or inherited `Normal`), the first row must be a repeating `w:tblHeader` row with `w:cantSplit`, and table cells must use explicit black borders, black text, and a plain white fill. Remove cell shading or set every `w:shd` fill explicitly to `FFFFFF`; do not use blue, gray, or theme-color table fills. Compute each column's minimum from its longest unbreakable cell plus cell margins, keep index/序号 columns narrow, and give the remaining width to long description columns; never split the available width evenly by default. The paragraph containing an inline drawing and its separate caption must carry the effective `图片` paragraph style; the caption is centered and uses the `图1  ……` convention. A visual table that merely looks correct while its cell paragraphs remain `正文` is a failed result.
+每段只有一个编号来源：有直接或样式继承的`w:numPr`时，由OOXML编号并删除匹配的行首文字编号；无`w:numPr`时保留原文编号，不另加自动编号。不要误删正文中间的括号、日期或数值。
 
-Table titles (`表1  ……`) and figure captions (`图1  ……`) use the same `图片` paragraph style, regular weight, centered alignment, and identical font family, font size and color. A table title is outside the table; it must not use the cell styles `表格`/`表格正文` or heading formatting. `scripts/caption_format.py` resolves the first existing figure caption's effective run typography, including style inheritance and direct overrides, and applies that profile to every table title and figure caption. If there is no figure caption, resolve the named `图片` style as the fallback. Explicitly disable `w:b` and `w:bCs`, remove stale direct run font/size overrides by replacing them with the resolved caption profile, and keep the table title with its table. `apply_official_rules.py` performs this pass automatically; `check_official_document.py` must reject differing caption fonts, sizes or weights. Never hardcode a style ID or a separate bold 黑体 table-title format.
+标题编号来自`word/numbering.xml`，须为标题1—5实际使用的编号级别明确写入`w:rFonts`、`w:sz`和`w:szCs`，采用对应标题有效字体和确认字号。不能只改标题文字；编号符号与标题文字必须实渲染同号。
 
-In Chinese prose, remove spaces at Chinese–English boundaries (`WPS中`, `Word表格`, `公文格式Skill`); preserve spaces that belong inside an English phrase such as `New York`.
+移除仅为标题区产生的分页，标题分行按语义安排，保留机构及单位名称完整，兼顾梯形或菱形的视觉平衡。二级标题用常规黑体，不加粗。顶部标题区与正文之间保留一个Normal空段，各级标题之后不额外插空段。
 
-Do not invent a subtitle, sample label, or annotation to fill the title block. Keep a source-provided subtitle only when the source clearly marks it as such; render it centered and in parentheses when that is the source convention. If no subtitle exists, leave it out.
+不为凑标题区创造副标题、样例标签或注释。只有来源明确给出副标题才保留，按来源约定居中或加括号。中文与英文边界不添加多余空格，例如“WPS中”“Word表格”；英文短语自身的空格保留。
 
-For repeatable width decisions, run `scripts/smart_table_widths.py input.docx --json` on a copy before applying changes. The report classifies columns as `narrow`, `regular`, or `flex`, calculates page-available width from the section margins, protects minimum readable widths, and allocates leftover width to long-text columns. Use `--apply` only after reviewing the report, then render in WPS. Tables with merged/grid-span cells are reported for manual review rather than being blindly rewritten.
+## 分页、网格与间距
 
-The same semantic pass must also set short-field columns such as序号、状态、日期 to centered alignment, long-text columns such as主要内容、说明、依据 to left alignment, repeat the first row on later pages, prevent row splitting, keep each `表n` title with its table, and keep each image with its `图n` caption. Use `表格` for short values, names, dates, statuses, and compact enumerations, with centered alignment. Use `表格正文` when a cell contains sentence punctuation (`，`、`。`、`；`、`：`) and is long enough to wrap, or when a description is a long enumeration of at least 20 Chinese characters containing `、`; apply first-line indentation, left/justified prose alignment, and the same table font and line spacing. Do not apply `表格正文` to serial numbers, dates, statuses, short labels, or compact one-line values. The checker and writer must use the same predicate so a cell cannot pass visually while carrying the wrong semantic style. Widths are accepted only after the rendered table is checked for wrapping, clipped text, oversized blank columns, and page-break damage.
+分页设置必须落实为实际OOXML：孤行控制`w:widowControl`、与下段同页`w:keepNext`、段中不分页`w:keepLines`。
 
-User instructions control requested content and explicit deviations. The retained reference controls layout and formatting where the user has not requested a change.
+- 用户明确要求全文启用时，对全部段落写入三项，包括表格单元格；每个表格行写入`w:cantSplit`。
+- 未要求全文启用时，正文与标题启用孤行控制、段中不分页；标题、图注、表题和图片段落启用与下段同页。
+- 解析样式继承后核实实际值，不能把没有落在段落或有效样式上的默认设置算作启用；分页控制可能改变页数，处理后必须重渲染。
 
-## v2 stability contract
+主文档所有段落及段落样式显式设置`w:snapToGrid w:val="0"`，关闭“如果定义了文档网格，则与网格对齐”。默认1.35倍行距，用户另有要求时覆盖。默认属性为：
 
-Before editing, inspect effective styles and numbering rather than trusting fixed style IDs. Produce a change plan with user overrides and expected changed parts. Apply deterministic rules with `scripts/apply_official_rules.py <input> <output> --body-half-points <resolved-half-points> --line-multiple 1.35 --before-lines 0 --after-lines 25 --table-after-lines 50` (add `--full-pagination-controls` when requested), then run `scripts/check_official_document.py --expected-half-points <resolved-half-points> --expected-line-multiple 1.35 --expected-before-lines 0 --expected-after-lines 25 --expected-table-after-lines 50 --require-snap-to-grid-off` (plus `--require-full-pagination-controls` when requested), `scripts/check_package_preservation.py`, and `scripts/check_idempotence.py`; finish with WPS `word2photo` page-by-page inspection. A second run must not add another marker, blank paragraph, title line break, or formatting mutation. For inserted tables, require explicit borders and cell geometry; for inserted images, verify the relationship and WPS-rendered extent. The acceptance audit must include numbering-level font/size parity with heading text, line-spacing parity, explicit before/after spacing, table-follow spacing, explicit snap-to-grid-off, presence of the requested pagination properties on the requested paragraph scope, repeating table headers, and `w:cantSplit` on every table row.
+```xml
+<w:spacing w:line="324" w:lineRule="auto" w:before="0" w:beforeLines="0" w:after="0" w:afterLines="25"/>
+```
+
+即段前0、段后0.25倍行距。表格、图片段落也要明确设置，不依赖继承。每个表格后第一个段落额外设置`w:beforeLines="50"`，留出0.5倍行间隔，不插入空段。
+
+默认保留页眉、页脚、脚注与尾注部件，它们可能包含WPS域和页码回退；只有用户明确要求才修改这些部件。保存后核查XML与WPS实渲染。
+
+## 表格、图片与语义样式
+
+每张表前放独立居中表题，使用“表1  ……”连续编号。单元格段落必须具有有效的`表格`或`表格正文`样式，不能仅依赖Table Grid或继承Normal。第一行重复表头`w:tblHeader`并设置`w:cantSplit`。明确边框、黑色文字、纯白填充；删除底纹或将`w:shd`的fill设为`FFFFFF`，不使用蓝色、灰色或主题色填充。
+
+列宽从最长不可拆单元和边距推算最小值；序号等短列保持窄，剩余宽度分配给说明列，不默认等宽。先运行`python3 scripts/smart_table_widths.py 输入.docx --json`查看窄列、普通列、弹性列及页内可用宽度，审查后才用`--apply`修改副本。合并单元格或grid-span须人工核对，不盲改。
+
+序号、状态、日期等短字段居中；主要内容、说明、依据等长字段左对齐。短值、人名、日期、状态、紧凑枚举使用`表格`；含句子标点且足以换行的长句，或不少于20个汉字并含“、”的长枚举，使用`表格正文`，首行缩进并左对齐或两端对齐，保持表格字体和行距一致。处理器与检查器共享`scripts/table_semantics.py`的判定，不让视觉像表格但段落仍为正文的结果通过。
+
+图片所在段落与独立图注均使用有效`图片`段落样式，图注居中并采用“图1  ……”编号。表题与图注共享`图片`样式、常规字重、字体、字号和颜色；表题在表外，不能用单元格样式或标题样式。
+
+`scripts/caption_format.py`从首个已有图注解析继承和直接格式；没有图注时解析`图片`样式。对所有表题和图注应用同一属性，明确关闭`w:b`和`w:bCs`，清理过期直接字体/字号，表题与表格保持同页。`apply_official_rules.py`执行这一过程，检查器拒绝表题与图注字体、字号、字重不一致；不硬编码样式ID或另造粗黑体表题。
+
+复核重复表头、禁止跨行拆页、图与图注的同页关系、实际图片关系及尺寸。列宽只有在WPS中确认换行、文字裁切、空白过宽及分页均正常后才算通过。
+
+## 稳定处理与验收
+
+格式处理示例，参数中的字号使用本轮确认值：
+
+```bash
+python3 scripts/apply_official_rules.py 输入.docx 输出.docx --body-half-points 28 --line-multiple 1.35 --before-lines 0 --after-lines 25 --table-after-lines 50
+python3 scripts/check_official_document.py 输出.docx --expected-half-points 28 --expected-line-multiple 1.35 --expected-before-lines 0 --expected-after-lines 25 --expected-table-after-lines 50 --require-snap-to-grid-off
+```
+
+要求全文分页控制时，处理器增加`--full-pagination-controls`，检查器增加`--require-full-pagination-controls`。
+
+另运行`scripts/check_package_preservation.py`，按明确允许清单核查改动部件；第二次运行相同处理后，用`scripts/check_idempotence.py`比较语义快照。不能新增重复编号、空段、标题换行或格式变动。
+
+最后用WPS的`word2photo`逐页检查：编号与标题字号、行距、段前后与表后间隔、网格关闭、要求范围内的分页属性、重复表头与各行`w:cantSplit`，以及表格和图片的可读性。没有实际渲染能力时说明未验证，不以XML通过代替页貌验收。
