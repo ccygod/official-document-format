@@ -1,0 +1,10 @@
+name: Improvement
+description: Propose a change with a concrete use case
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case and desired improvement
+      description: Explain the user outcome and an example
+    validations:
+      required: true

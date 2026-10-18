@@ -1,0 +1,7 @@
+interface:
+  display_name: "公文格式skill（official document skill）"
+  short_description: "Create a document from this saved template"
+  icon_large: "./assets/preview.png"
+  default_prompt: "Use $artifact-template-wps to create a document with this template."
+policy:
+  allow_implicit_invocation: true

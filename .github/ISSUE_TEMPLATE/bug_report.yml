@@ -1,0 +1,23 @@
+name: Bug report
+description: Report a reproducible issue with a synthetic example
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python, host, release version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and synthetic input
+      description: No credentials, customer files, or personal data
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Expected and actual outcome
+    validations:
+      required: true

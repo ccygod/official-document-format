@@ -1,0 +1,2748 @@
+{
+  "reference": {
+    "path": "assets/reference.docx",
+    "sha256": "952efbaa17c2dacbf7dbc101987bd620c0b3b3da991e2951181ef60c8ce0e9f1",
+    "package_parts": 26,
+    "parts": [
+      {
+        "path": "[Content_Types].xml",
+        "size": 2066,
+        "compress_type": 8
+      },
+      {
+        "path": "_rels/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "_rels/.rels",
+        "size": 737,
+        "compress_type": 8
+      },
+      {
+        "path": "customXml/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "customXml/_rels/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "customXml/_rels/item1.xml.rels",
+        "size": 296,
+        "compress_type": 8
+      },
+      {
+        "path": "customXml/item1.xml",
+        "size": 340,
+        "compress_type": 8
+      },
+      {
+        "path": "customXml/itemProps1.xml",
+        "size": 327,
+        "compress_type": 8
+      },
+      {
+        "path": "docProps/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "docProps/app.xml",
+        "size": 636,
+        "compress_type": 8
+      },
+      {
+        "path": "docProps/core.xml",
+        "size": 293,
+        "compress_type": 8
+      },
+      {
+        "path": "docProps/custom.xml",
+        "size": 387,
+        "compress_type": 8
+      },
+      {
+        "path": "word/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "word/_rels/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "word/_rels/document.xml.rels",
+        "size": 1484,
+        "compress_type": 8
+      },
+      {
+        "path": "word/customizations.xml",
+        "size": 1831,
+        "compress_type": 8
+      },
+      {
+        "path": "word/document.xml",
+        "size": 11915,
+        "compress_type": 8
+      },
+      {
+        "path": "word/endnotes.xml",
+        "size": 1648,
+        "compress_type": 8
+      },
+      {
+        "path": "word/fontTable.xml",
+        "size": 8873,
+        "compress_type": 8
+      },
+      {
+        "path": "word/footer1.xml",
+        "size": 6695,
+        "compress_type": 8
+      },
+      {
+        "path": "word/footnotes.xml",
+        "size": 1654,
+        "compress_type": 8
+      },
+      {
+        "path": "word/numbering.xml",
+        "size": 4987,
+        "compress_type": 8
+      },
+      {
+        "path": "word/settings.xml",
+        "size": 4962,
+        "compress_type": 8
+      },
+      {
+        "path": "word/styles.xml",
+        "size": 40337,
+        "compress_type": 8
+      },
+      {
+        "path": "word/theme/",
+        "size": 0,
+        "compress_type": 8
+      },
+      {
+        "path": "word/theme/theme1.xml",
+        "size": 7048,
+        "compress_type": 8
+      }
+    ]
+  },
+  "page_system": [
+    {
+      "type": null,
+      "page_size": {
+        "w": "11906",
+        "h": "16838"
+      },
+      "page_margins": {
+        "top": "1440",
+        "right": "1800",
+        "bottom": "1440",
+        "left": "1800",
+        "header": "851",
+        "footer": "992",
+        "gutter": "0"
+      },
+      "columns": {
+        "space": "720",
+        "num": "1"
+      },
+      "headers": [],
+      "footers": []
+    },
+    {
+      "type": null,
+      "page_size": {
+        "w": "11906",
+        "h": "16838"
+      },
+      "page_margins": {
+        "top": "1440",
+        "right": "1800",
+        "bottom": "1440",
+        "left": "1800",
+        "header": "851",
+        "footer": "992",
+        "gutter": "0"
+      },
+      "columns": {
+        "space": "720",
+        "num": "1"
+      },
+      "headers": [],
+      "footers": [
+        {
+          "id": "rId5",
+          "type": "default"
+        }
+      ]
+    }
+  ],
+  "styles": [
+    {
+      "id": "1",
+      "type": "paragraph",
+      "name": "Normal",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "both"
+        },
+        "widowControl": {
+          "val": "0"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "480",
+          "firstLineChars": "200"
+        },
+        "spacing": {
+          "line": "300",
+          "lineRule": "auto"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Times New Roman",
+          "hAnsi": "Times New Roman",
+          "eastAsia": "FangSong_GB2312",
+          "cs": "Times New Roman"
+        },
+        "sz": {
+          "val": "24"
+        },
+        "szCs": {
+          "val": "24"
+        },
+        "lang": {
+          "val": "en-US",
+          "eastAsia": "zh-CN",
+          "bidi": "ar-SA"
+        }
+      }
+    },
+    {
+      "id": "2",
+      "type": "paragraph",
+      "name": "heading 1",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "0"
+        },
+        "ind": {
+          "left": "432",
+          "hanging": "432",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "beforeLines": "0",
+          "beforeAutospacing": "0",
+          "after": "100",
+          "afterLines": "100",
+          "afterAutospacing": "0",
+          "line": "240",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "0"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "eastAsia": "方正小标宋简体"
+        },
+        "sz": {
+          "val": "32"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "paragraph",
+      "name": "heading 2",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "1"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "25",
+          "beforeLines": "25",
+          "beforeAutospacing": "0",
+          "after": "25",
+          "afterLines": "25",
+          "afterAutospacing": "0",
+          "line": "300",
+          "lineRule": "auto"
+        },
+        "tabs": [
+          {
+            "val": "left",
+            "pos": "0"
+          }
+        ],
+        "numPr": [
+          {
+            "val": "1"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "hAnsi": "Arial",
+          "eastAsia": "黑体"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        }
+      }
+    },
+    {
+      "id": "4",
+      "type": "paragraph",
+      "name": "heading 3",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "2"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "20",
+          "beforeLines": "20",
+          "beforeAutospacing": "0",
+          "after": "20",
+          "afterLines": "20",
+          "afterAutospacing": "0",
+          "line": "300",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "2"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Times New Roman Bold",
+          "hAnsi": "Times New Roman Bold",
+          "eastAsia": "楷体"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        },
+        "b": {}
+      }
+    },
+    {
+      "id": "5",
+      "type": "paragraph",
+      "name": "heading 4",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "3"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "15",
+          "beforeLines": "15",
+          "beforeAutospacing": "0",
+          "after": "15",
+          "afterLines": "15",
+          "afterAutospacing": "0",
+          "line": "300",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "3"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "hAnsi": "Arial",
+          "eastAsia": "宋体"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        }
+      }
+    },
+    {
+      "id": "6",
+      "type": "paragraph",
+      "name": "heading 5",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {
+          "val": "0"
+        },
+        "keepLines": {
+          "val": "0"
+        },
+        "outlineLvl": {
+          "val": "4"
+        },
+        "ind": {
+          "left": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "beforeAutospacing": "0",
+          "afterAutospacing": "0",
+          "line": "240",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "4"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        }
+      }
+    },
+    {
+      "id": "7",
+      "type": "paragraph",
+      "name": "heading 6",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "5"
+        },
+        "ind": {
+          "left": "0",
+          "firstLine": "1120",
+          "firstLineChars": "200"
+        },
+        "spacing": {
+          "beforeLines": "0",
+          "beforeAutospacing": "0",
+          "afterLines": "0",
+          "afterAutospacing": "0",
+          "line": "240",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "5"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "hAnsi": "Arial"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        }
+      }
+    },
+    {
+      "id": "8",
+      "type": "paragraph",
+      "name": "heading 7",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "6"
+        },
+        "ind": {
+          "left": "1296",
+          "hanging": "1296",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "240",
+          "beforeLines": "0",
+          "beforeAutospacing": "0",
+          "after": "64",
+          "afterLines": "0",
+          "afterAutospacing": "0",
+          "line": "317",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "6"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "eastAsia": "方正仿宋_GB2312"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        },
+        "b": {}
+      }
+    },
+    {
+      "id": "9",
+      "type": "paragraph",
+      "name": "heading 8",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "7"
+        },
+        "ind": {
+          "left": "1440",
+          "hanging": "1440",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "240",
+          "beforeLines": "0",
+          "beforeAutospacing": "0",
+          "after": "64",
+          "afterLines": "0",
+          "afterAutospacing": "0",
+          "line": "317",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "7"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "hAnsi": "Arial",
+          "eastAsia": "黑体"
+        },
+        "sz": {
+          "val": "24"
+        }
+      }
+    },
+    {
+      "id": "10",
+      "type": "paragraph",
+      "name": "heading 9",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "keepNext": {},
+        "keepLines": {},
+        "outlineLvl": {
+          "val": "8"
+        },
+        "ind": {
+          "left": "1583",
+          "hanging": "1583",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "240",
+          "beforeLines": "0",
+          "beforeAutospacing": "0",
+          "after": "64",
+          "afterLines": "0",
+          "afterAutospacing": "0",
+          "line": "317",
+          "lineRule": "auto"
+        },
+        "numPr": [
+          {
+            "val": "8"
+          },
+          {
+            "val": "1"
+          }
+        ]
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "hAnsi": "Arial",
+          "eastAsia": "黑体"
+        },
+        "sz": {
+          "val": "21"
+        }
+      }
+    },
+    {
+      "id": "20",
+      "type": "character",
+      "name": "Default Paragraph Font",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {},
+      "run": {}
+    },
+    {
+      "id": "19",
+      "type": "table",
+      "name": "Normal Table",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {},
+      "run": {}
+    },
+    {
+      "id": "11",
+      "type": "paragraph",
+      "name": "toc 3",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "39"
+      },
+      "paragraph": {
+        "ind": {
+          "left": "840",
+          "leftChars": "400"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "eastAsia": "楷体"
+        }
+      }
+    },
+    {
+      "id": "12",
+      "type": "paragraph",
+      "name": "footer",
+      "based_on": {
+        "val": "1"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "99"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "left"
+        },
+        "tabs": [
+          {
+            "val": "center",
+            "pos": "4153"
+          },
+          {
+            "val": "right",
+            "pos": "8306"
+          }
+        ]
+      },
+      "run": {
+        "sz": {
+          "val": "18"
+        },
+        "szCs": {
+          "val": "18"
+        }
+      }
+    },
+    {
+      "id": "13",
+      "type": "paragraph",
+      "name": "header",
+      "based_on": {
+        "val": "1"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "both"
+        },
+        "outlineLvl": {
+          "val": "9"
+        },
+        "spacing": {
+          "line": "240",
+          "lineRule": "auto"
+        },
+        "tabs": [
+          {
+            "val": "center",
+            "pos": "4153"
+          },
+          {
+            "val": "right",
+            "pos": "8306"
+          }
+        ]
+      },
+      "run": {
+        "sz": {
+          "val": "18"
+        }
+      }
+    },
+    {
+      "id": "14",
+      "type": "paragraph",
+      "name": "toc 1",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "39"
+      },
+      "paragraph": {},
+      "run": {
+        "rFonts": {
+          "eastAsia": "黑体"
+        },
+        "sz": {
+          "val": "32"
+        }
+      }
+    },
+    {
+      "id": "15",
+      "type": "paragraph",
+      "name": "toc 4",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "ind": {
+          "left": "1260",
+          "leftChars": "600"
+        }
+      },
+      "run": {}
+    },
+    {
+      "id": "16",
+      "type": "paragraph",
+      "name": "toc 2",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "39"
+      },
+      "paragraph": {
+        "ind": {
+          "left": "420",
+          "leftChars": "200"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "eastAsia": "黑体"
+        }
+      }
+    },
+    {
+      "id": "17",
+      "type": "paragraph",
+      "name": "Normal (Web)",
+      "based_on": {
+        "val": "5"
+      },
+      "next": {
+        "val": "5"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "left"
+        },
+        "outlineLvl": {
+          "val": "9"
+        },
+        "ind": {
+          "left": "0",
+          "right": "0"
+        },
+        "spacing": {
+          "before": "15",
+          "beforeAutospacing": "0",
+          "after": "15",
+          "afterAutospacing": "0"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "hAnsi": "Arial",
+          "eastAsia": "宋体"
+        },
+        "lang": {
+          "bidi": "ar"
+        }
+      }
+    },
+    {
+      "id": "18",
+      "type": "paragraph",
+      "name": "Title",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "outlineLvl": {
+          "val": "0"
+        },
+        "ind": {
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "line": "240",
+          "lineRule": "auto"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Cambria",
+          "hAnsi": "Cambria",
+          "eastAsia": "宋体"
+        },
+        "sz": {
+          "val": "36"
+        },
+        "szCs": {
+          "val": "32"
+        },
+        "b": {},
+        "bCs": {}
+      }
+    },
+    {
+      "id": "21",
+      "type": "character",
+      "name": "Strong",
+      "based_on": {
+        "val": "20"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {},
+      "run": {
+        "b": {}
+      }
+    },
+    {
+      "id": "22",
+      "type": "character",
+      "name": "Hyperlink",
+      "based_on": {
+        "val": "20"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {},
+      "run": {
+        "color": {
+          "val": "0000FF"
+        },
+        "u": {
+          "val": "single"
+        }
+      }
+    },
+    {
+      "id": "23",
+      "type": "character",
+      "name": "标题 1 Char",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {},
+      "run": {
+        "rFonts": {
+          "eastAsia": "方正小标宋简体"
+        },
+        "sz": {
+          "val": "32"
+        },
+        "color": {
+          "val": "000000",
+          "themeColor": "text1"
+        }
+      }
+    },
+    {
+      "id": "24",
+      "type": "paragraph",
+      "name": "5级标题",
+      "based_on": {
+        "val": "1"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "spacing": {
+          "before": "25",
+          "beforeLines": "25",
+          "after": "25",
+          "afterLines": "25"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "eastAsia": "宋体"
+        }
+      }
+    },
+    {
+      "id": "25",
+      "type": "paragraph",
+      "name": "_Style 17",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "eastAsia": "宋体"
+        },
+        "sz": {
+          "val": "16"
+        },
+        "vanish": {}
+      }
+    },
+    {
+      "id": "26",
+      "type": "paragraph",
+      "name": "_Style 18",
+      "based_on": {
+        "val": "1"
+      },
+      "next": {
+        "val": "1"
+      },
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Arial",
+          "eastAsia": "宋体"
+        },
+        "sz": {
+          "val": "16"
+        },
+        "vanish": {}
+      }
+    },
+    {
+      "id": "27",
+      "type": "paragraph",
+      "name": "WPSOffice手动目录 1",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "ind": {
+          "leftChars": "0"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Times New Roman",
+          "hAnsi": "Times New Roman",
+          "eastAsia": "宋体",
+          "cs": "Times New Roman"
+        },
+        "sz": {
+          "val": "20"
+        },
+        "szCs": {
+          "val": "20"
+        }
+      }
+    },
+    {
+      "id": "28",
+      "type": "paragraph",
+      "name": "WPSOffice手动目录 2",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "ind": {
+          "leftChars": "200"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Times New Roman",
+          "hAnsi": "Times New Roman",
+          "eastAsia": "宋体",
+          "cs": "Times New Roman"
+        },
+        "sz": {
+          "val": "20"
+        },
+        "szCs": {
+          "val": "20"
+        }
+      }
+    },
+    {
+      "id": "29",
+      "type": "paragraph",
+      "name": "WPSOffice手动目录 3",
+      "based_on": null,
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "ind": {
+          "leftChars": "400"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "ascii": "Times New Roman",
+          "hAnsi": "Times New Roman",
+          "eastAsia": "宋体",
+          "cs": "Times New Roman"
+        },
+        "sz": {
+          "val": "20"
+        },
+        "szCs": {
+          "val": "20"
+        }
+      }
+    },
+    {
+      "id": "30",
+      "type": "paragraph",
+      "name": "图片",
+      "based_on": {
+        "val": "1"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "before": "50",
+          "beforeLines": "50",
+          "after": "50",
+          "afterLines": "50",
+          "line": "240",
+          "lineRule": "auto"
+        }
+      },
+      "run": {}
+    },
+    {
+      "id": "31",
+      "type": "paragraph",
+      "name": "表格",
+      "based_on": {
+        "val": "1"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "widowControl": {},
+        "ind": {
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "spacing": {
+          "line": "240",
+          "lineRule": "auto"
+        },
+        "textAlignment": {
+          "val": "center"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "hint": "eastAsia",
+          "ascii": "宋体",
+          "hAnsi": "宋体",
+          "eastAsia": "宋体",
+          "cs": "宋体"
+        },
+        "sz": {
+          "val": "21"
+        },
+        "szCs": {
+          "val": "22"
+        },
+        "color": {
+          "val": "000000"
+        },
+        "bCs": {},
+        "u": {
+          "val": "none"
+        },
+        "lang": {
+          "bidi": "ar"
+        }
+      }
+    },
+    {
+      "id": "32",
+      "type": "paragraph",
+      "name": "表格正文",
+      "based_on": {
+        "val": "31"
+      },
+      "next": null,
+      "q_format": true,
+      "ui_priority": {
+        "val": "0"
+      },
+      "paragraph": {
+        "jc": {
+          "val": "both"
+        },
+        "widowControl": {},
+        "ind": {
+          "firstLine": "420",
+          "firstLineChars": "200"
+        },
+        "spacing": {
+          "line": "240",
+          "lineRule": "auto"
+        },
+        "textAlignment": {
+          "val": "both"
+        }
+      },
+      "run": {
+        "rFonts": {
+          "hint": "eastAsia",
+          "ascii": "宋体",
+          "hAnsi": "宋体",
+          "eastAsia": "宋体",
+          "cs": "宋体"
+        },
+        "sz": {
+          "val": "21"
+        },
+        "szCs": {
+          "val": "22"
+        },
+        "color": {
+          "val": "000000"
+        },
+        "bCs": {},
+        "u": {
+          "val": "none"
+        },
+        "lang": {
+          "bidi": "ar"
+        }
+      }
+    }
+  ],
+  "paragraph_inventory": [
+    {
+      "index": 0,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 1,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 2,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 3,
+      "text": "示例机构",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "示例机构",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia",
+              "ascii": "黑体",
+              "hAnsi": "黑体",
+              "eastAsia": "黑体",
+              "cs": "黑体"
+            },
+            "sz": {
+              "val": "52"
+            },
+            "szCs": {
+              "val": "52"
+            },
+            "lang": {
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 4,
+      "text": "示例区域",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "示例区域",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia",
+              "ascii": "黑体",
+              "hAnsi": "黑体",
+              "eastAsia": "黑体",
+              "cs": "黑体"
+            },
+            "sz": {
+              "val": "52"
+            },
+            "szCs": {
+              "val": "52"
+            },
+            "lang": {
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 5,
+      "text": "项目建设方案示例",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "项目建设方案示例",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia",
+              "ascii": "黑体",
+              "hAnsi": "黑体",
+              "eastAsia": "黑体",
+              "cs": "黑体"
+            },
+            "sz": {
+              "val": "52"
+            },
+            "szCs": {
+              "val": "52"
+            },
+            "lang": {
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 6,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 7,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 8,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 9,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 10,
+      "text": "示例机构名称",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "示例机构名称",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia",
+              "ascii": "黑体",
+              "hAnsi": "黑体",
+              "eastAsia": "黑体",
+              "cs": "黑体"
+            },
+            "sz": {
+              "val": "32"
+            },
+            "szCs": {
+              "val": "32"
+            },
+            "lang": {
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 11,
+      "text": "",
+      "style": {
+        "val": "3"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "3"
+        },
+        "ind": {
+          "leftChars": "0"
+        },
+        "numPr": [
+          {
+            "val": "1"
+          },
+          {
+            "val": "0"
+          }
+        ],
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "",
+          "run": {
+            "rFonts": {
+              "hint": "default"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 12,
+      "text": "目录",
+      "style": {
+        "val": "16"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "16"
+        },
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "tabs": [
+          {
+            "val": "right",
+            "leader": "dot",
+            "pos": "8306"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "text": "目录",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia",
+              "ascii": "宋体",
+              "hAnsi": "宋体",
+              "eastAsia": "宋体",
+              "cs": "宋体"
+            },
+            "sz": {
+              "val": "40"
+            },
+            "szCs": {
+              "val": "40"
+            },
+            "lang": {
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 13,
+      "text": "",
+      "style": null,
+      "paragraph": {},
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 14,
+      "text": "一、建设背景1",
+      "style": {
+        "val": "16"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "16"
+        },
+        "tabs": [
+          {
+            "val": "right",
+            "leader": "dot",
+            "pos": "8306"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "一、",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia",
+              "ascii": "宋体",
+              "hAnsi": "宋体",
+              "eastAsia": "黑体",
+              "cs": "Times New Roman"
+            },
+            "szCs": {
+              "val": "24"
+            },
+            "bCs": {},
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        },
+        {
+          "text": "建设背景",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "1",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        },
+        {
+          "text": "",
+          "run": {}
+        }
+      ],
+      "fields": [
+        "TOC \\o \"1-4\" \\h \\u",
+        "HYPERLINK \\l _Toc25206",
+        "PAGEREF _Toc25206 \\h"
+      ]
+    },
+    {
+      "index": 15,
+      "text": "",
+      "style": null,
+      "paragraph": {},
+      "runs": [
+        {
+          "text": "",
+          "run": {}
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 16,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "jc": {
+          "val": "center"
+        },
+        "ind": {
+          "left": "0",
+          "leftChars": "0",
+          "firstLine": "0",
+          "firstLineChars": "0"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 17,
+      "text": "示例机构",
+      "style": {
+        "val": "18"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "18"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "示例机构",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 18,
+      "text": "示例区域",
+      "style": {
+        "val": "18"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "18"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "示例区域",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 19,
+      "text": "项目建设方案示例",
+      "style": {
+        "val": "18"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "18"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "项目建设方案示例",
+          "run": {
+            "rFonts": {
+              "hint": "eastAsia"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 20,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    },
+    {
+      "index": 21,
+      "text": "建设背景：说明实际需求与建设目标",
+      "style": {
+        "val": "3"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "3"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "建设背景：说明实际需求与建设目标",
+          "run": {
+            "rFonts": {
+              "hint": "default"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 22,
+      "text": "国家战略引领区域发展方向",
+      "style": {
+        "val": "5"
+      },
+      "paragraph": {
+        "pStyle": {
+          "val": "5"
+        },
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [
+        {
+          "text": "国家战略",
+          "run": {
+            "rFonts": {
+              "hint": "default"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        },
+        {
+          "text": "引领区域发展方向",
+          "run": {
+            "rFonts": {
+              "hint": "default"
+            },
+            "lang": {
+              "val": "en-US",
+              "eastAsia": "zh-CN"
+            }
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "index": 23,
+      "text": "",
+      "style": null,
+      "paragraph": {
+        "bidi": {
+          "val": "0"
+        }
+      },
+      "runs": [],
+      "fields": []
+    }
+  ],
+  "font_table": [
+    {
+      "name": "Times New Roman",
+      "alt_name": null,
+      "charset": {
+        "val": "01"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "宋体",
+      "alt_name": {
+        "val": "汉仪书宋二KW"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Wingdings",
+      "alt_name": null,
+      "charset": {
+        "val": "02"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Arial",
+      "alt_name": null,
+      "charset": {
+        "val": "01"
+      },
+      "family": {
+        "val": "swiss"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "黑体",
+      "alt_name": {
+        "val": "汉仪中黑KW"
+      },
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Courier New",
+      "alt_name": null,
+      "charset": {
+        "val": "01"
+      },
+      "family": {
+        "val": "modern"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Symbol",
+      "alt_name": {
+        "val": "Kingsoft Sign"
+      },
+      "charset": {
+        "val": "02"
+      },
+      "family": {
+        "val": "roman"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Calibri",
+      "alt_name": {
+        "val": "Helvetica Neue"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "swiss"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "仿宋_GB2312",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "方正仿宋_GB2312",
+      "alt_name": {
+        "val": "仿宋-简"
+      },
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "仿宋",
+      "alt_name": {
+        "val": "仿宋-简"
+      },
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "方正小标宋简体",
+      "alt_name": {
+        "val": "汉仪书宋二KW"
+      },
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "楷体",
+      "alt_name": {
+        "val": "汉仪楷体KW"
+      },
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Cambria",
+      "alt_name": {
+        "val": "苹方-简"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "汉仪书宋二KW",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "汉仪中黑KW",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "苹方-简",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Kingsoft Sign",
+      "alt_name": null,
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Helvetica Neue",
+      "alt_name": null,
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "仿宋-简",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "汉仪楷体KW",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "PingFang SC",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Tahoma",
+      "alt_name": null,
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Arial",
+      "alt_name": null,
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "黑体",
+      "alt_name": {
+        "val": "汉仪中黑KW"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "FangSong_GB2312",
+      "alt_name": null,
+      "charset": {
+        "val": "86"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "楷体",
+      "alt_name": {
+        "val": "汉仪楷体KW"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "方正小标宋简体",
+      "alt_name": {
+        "val": "汉仪书宋二KW"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "+西文正文",
+      "alt_name": {
+        "val": "苹方-简"
+      },
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    },
+    {
+      "name": "Times New Roman Bold",
+      "alt_name": null,
+      "charset": {
+        "val": "00"
+      },
+      "family": {
+        "val": "auto"
+      },
+      "pitch": {
+        "val": "default"
+      },
+      "embedded_regular": null
+    }
+  ],
+  "customizations": {
+    "keymaps": [
+      {
+        "kcmPrimary": "0431"
+      },
+      {
+        "kcmPrimary": "0432"
+      },
+      {
+        "kcmPrimary": "0434"
+      },
+      {
+        "kcmPrimary": "0435"
+      },
+      {
+        "kcmPrimary": "0430"
+      },
+      {
+        "kcmPrimary": "0436"
+      },
+      {
+        "kcmPrimary": "0454"
+      },
+      {
+        "kcmPrimary": "0442"
+      },
+      {
+        "kcmPrimary": "0433"
+      },
+      {
+        "kcmPrimary": "04DE"
+      }
+    ],
+    "acds": [
+      {
+        "acdName": "acd0"
+      },
+      {
+        "acdName": "acd1"
+      },
+      {
+        "acdName": "acd2"
+      },
+      {
+        "acdName": "acd3"
+      },
+      {
+        "acdName": "acd4"
+      },
+      {
+        "acdName": "acd5"
+      },
+      {
+        "acdName": "acd6"
+      },
+      {
+        "acdName": "acd7"
+      },
+      {
+        "acdName": "acd8"
+      },
+      {
+        "acdName": "acd9"
+      },
+      {
+        "argValue": "AQAAAAEA",
+        "acdName": "acd0",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAAIA",
+        "acdName": "acd1",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAAQA",
+        "acdName": "acd2",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAAUA",
+        "acdName": "acd3",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAD4A",
+        "acdName": "acd4",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAAYA",
+        "acdName": "acd5",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AgD+Vkdy",
+        "acdName": "acd6",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AgA3aA9fMQA=",
+        "acdName": "acd7",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAAMA",
+        "acdName": "acd8",
+        "fciIndexBasedOn": "0065"
+      },
+      {
+        "argValue": "AQAAAAAA",
+        "acdName": "acd9",
+        "fciIndexBasedOn": "0065"
+      }
+    ]
+  },
+  "fields": [
+    "TOC \\o \"1-4\" \\h \\u",
+    "HYPERLINK \\l _Toc25206",
+    "PAGEREF _Toc25206 \\h"
+  ],
+  "wps_markers": [
+    "http://www.wps.cn/officeDocument/2013/wpsCustomData",
+    "mc:AlternateContent",
+    "w:themeFontLang",
+    "w:zoom",
+    "wne:tcg",
+    "wpsCustomData"
+  ],
+  "public_release_notes": [
+    "Sample names and document properties sanitized.",
+    "Embedded font binary removed; install fonts separately."
+  ]
+}
