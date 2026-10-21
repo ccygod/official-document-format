@@ -85,7 +85,7 @@ def normalize_captions(root, styles):
             n.set(q('val'), value)
         keep = pp.find(q('keepNext'))
         if keep is None: keep = etree.SubElement(pp, q('keepNext'))
-        keep.set(q('val'), '1')
+        keep.set(q('val'), '0' if FIGURE.match(text(p)) else '1')
         for old in pp.findall(q('rPr')): pp.remove(old)
         for r in p.xpath('.//w:r', namespaces=ns):
             for old in r.findall(q('rPr')): r.remove(old)

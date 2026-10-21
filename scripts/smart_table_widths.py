@@ -33,7 +33,7 @@ def available_width(doc):
     pg=sec.find(q('pgSz')); mar=sec.find(q('pgMar'))
     if pg is None or mar is None: return 8200
     try:
-        return max(4500,int(pg.get(q('w')))-int(mar.get(q('left')))-int(mar.get(q('right'))))
+        return max(1,int(pg.get(q('w')))-int(mar.get(q('left')))-int(mar.get(q('right'))))
     except (TypeError,ValueError): return 8200
 
 def infer_widths(tbl, avail):
@@ -57,7 +57,8 @@ def infer_widths(tbl, avail):
         max_intrinsic=max([text_width(x) for x in allvals] or [420])
         # The longest value is a ceiling signal, not a demand: long prose must wrap.
         avg_chars=sum(len(x) for x in allvals)/max(1,len(allvals))
-        if NARROW.search(h):
+        long_values=max((len(v) for v in allvals[1:]),default=0)>=18
+        if NARROW.search(h) and not long_values:
             role='narrow'; mn=min(900,max(560,text_width(h)+216)); pref=min(900,max(mn,700))
         elif LONG.search(h) or avg_chars>=18:
             role='flex'; mn=min(1700,max(1100,text_width(h)+216)); pref=max(mn,min(4200,max_intrinsic//2+216))
@@ -68,14 +69,15 @@ def infer_widths(tbl, avail):
         # Keep semantic minimums but scale all columns down proportionally.
         scale=avail/sum(mins); widths=[max(500,int(x*scale)) for x in mins]
         return widths, {'headers':headers,'roles':roles,'mode':'compressed','available':avail}
+    compact=not any(r=="flex" for r in roles) and all(max((len(v) for v in col),default=0)<=10 for col in values)
     widths=prefs[:]
-    if sum(widths)<avail:
+    if sum(widths)<avail and not compact:
         extra=avail-sum(widths)
         # Narrow semantic columns keep their compact width; flexible space goes
         # to descriptive columns first instead of recreating equal-width tables.
         weights=[0.0 if r=='narrow' else 2.0 if r=='flex' else 1.0 for r in roles]
         sw=sum(weights)
-        widths=[w+int(extra*wt/sw) for w,wt in zip(widths,weights)]
+        widths=[w+int(extra*wt/sw) for w,wt in zip(widths,weights)] if sw else widths
     elif sum(widths)>avail:
         need=sum(widths)-avail
         flex=[i for i,r in enumerate(roles) if r!='narrow' and widths[i]>mins[i]]
@@ -87,7 +89,7 @@ def infer_widths(tbl, avail):
                 if need<=0: break
             if not changed: break
     # Correct rounding drift on the longest-text column.
-    drift=avail-sum(widths); target=max(range(n),key=lambda i: len(values[i][0]) if values[i] else 0)
+    drift=avail-sum(widths) if any(r!='narrow' for r in roles) and not compact else 0; target=max(range(n),key=lambda i: len(values[i][0]) if values[i] else 0)
     widths[target]+=drift
     return widths, {'headers':headers,'roles':roles,'mode':'balanced','available':avail,'minimums':mins}
 
@@ -100,9 +102,14 @@ def patch_doc(path, apply=False):
                 report.append({'table':ti,'widths':None,**meta}); continue
             report.append({'table':ti,'widths':widths,**meta})
             if not apply: continue
-            pr=tbl.find(q('tblPr')); layout=pr.find(q('tblLayout'))
+            pr=tbl.find(q('tblPr'))
+            if pr is None: pr=etree.Element(q('tblPr'));tbl.insert(0,pr)
+            layout=pr.find(q('tblLayout'))
             if layout is None: layout=etree.SubElement(pr,q('tblLayout'))
             layout.set(q('type'),'fixed')
+            tw=pr.find(q('tblW'))
+            if tw is None:tw=etree.SubElement(pr,q('tblW'))
+            tw.set(q('type'),'dxa');tw.set(q('w'),str(sum(widths)))
             grid=tbl.find(q('tblGrid'))
             if grid is None: grid=etree.Element(q('tblGrid')); tbl.insert(1,grid)
             for c in list(grid): grid.remove(c)

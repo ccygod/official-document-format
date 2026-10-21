@@ -24,6 +24,7 @@ class ReleasePipelineTests(unittest.TestCase):
             result=checker.main(self.out,expected_half_points=28,expected_line_multiple=1.35,require_snap_to_grid_off=True,expected_before_lines=0,expected_after_lines=25,expected_table_after_lines=50)
         self.assertEqual(result,0)
     def test_showcase_covers_five_heading_levels_figure_and_table_notes(self):
+        rules.main(self.src,self.out,28,1.35,False,heading_start=1)
         model=OOXMLModel(self.out);records=list(model.paragraphs())
         roles={r['role'] for r in records}
         self.assertTrue({f'heading-{i}' for i in range(1,6)} <= roles)

@@ -9,6 +9,7 @@ class OOXMLModel:
  def __init__(self,path):
   self.path=path; self.z=ZipFile(path); self.doc=etree.fromstring(self.z.read('word/document.xml')); self.styles_xml=etree.fromstring(self.z.read('word/styles.xml')); self.num_xml=etree.fromstring(self.z.read('word/numbering.xml')) if 'word/numbering.xml' in self.z.namelist() else None
   self.styles={s.get(q('styleId')):s for s in self.styles_xml.findall(q('style'))}
+  self.default_style=next((sid for sid,s in self.styles.items() if s.get(q('type'))=='paragraph' and s.get(q('default'))=='1'), 'Normal' if 'Normal' in self.styles else '1')
   self.num_to_abs={n.get(q('numId')): (n.find(q('abstractNumId')).get(q('val')) if n.find(q('abstractNumId')) is not None else None) for n in (self.num_xml.findall(q('num')) if self.num_xml is not None else [])}
   self.abstracts={a.get(q('abstractNumId')):a for a in (self.num_xml.findall(q('abstractNum')) if self.num_xml is not None else [])}
  def style_chain(self,sid):
@@ -45,13 +46,22 @@ class OOXMLModel:
     result.append(deepcopy(child))
   return result
  def p_style(self,p):
-  pp=p.find(q('pPr')); s=pp.find(q('pStyle')) if pp is not None else None; return s.get(q('val')) if s is not None else '1'
+  pp=p.find(q('pPr')); s=pp.find(q('pStyle')) if pp is not None else None; return s.get(q('val')) if s is not None else self.default_style
  def effective_num(self,p):
-  sid=self.p_style(p); pp=p.find(q('pPr')); np=pp.find(q('numPr')) if pp is not None else None
-  if np is None: np=self.effective(sid,'pPr').find(q('numPr'))
-  if np is None:return None
-  il=np.find(q('ilvl')); ni=np.find(q('numId')); numid=ni.get(q('val')) if ni is not None else None; ilvl=il.get(q('val')) if il is not None else '0'; aid=self.num_to_abs.get(numid)
-  lvl=self.abstracts.get(aid).find(f'{q("lvl")}[{q("ilvl")}="{ilvl}"]') if aid in self.abstracts else None
+  sid=self.p_style(p); pp=p.find(q('pPr')); values={}
+  # numPr children inherit individually (direct ilvl may inherit style numId).
+  for st in self.style_chain(sid):
+   for x in st.findall('./'+q('pPr')+'/'+q('numPr')+'/*'): values[etree.QName(x).localname]=x.get(q('val'))
+  if pp is not None:
+   for x in pp.findall('./'+q('numPr')+'/*'): values[etree.QName(x).localname]=x.get(q('val'))
+  numid=values.get('numId'); ilvl=values.get('ilvl','0')
+  if not numid or numid=='0':return None
+  aid=self.num_to_abs.get(numid)
+  lvl=self.abstracts.get(aid).find(f'{q("lvl")}[@{q("ilvl")}="{ilvl}"]') if aid in self.abstracts else None
+  inst=self.num_xml.find(f'{q("num")}[@{q("numId")}="{numid}"]') if self.num_xml is not None else None
+  if inst is not None:
+   override=inst.find(f'{q("lvlOverride")}[@{q("ilvl")}="{ilvl}"]/'+q('lvl'))
+   if override is not None:lvl=override
   return {'numId':numid,'ilvl':ilvl,'abstractNumId':aid,'level':lvl}
  def paragraphs(self):
   for i,p in enumerate(self.doc.xpath('.//w:body/w:p',namespaces=ns)):

@@ -1,3 +1,5 @@
+> 本文件包含原母版或旧版规则记录。当前执行以SKILL.md、config/official.json及本次用户覆盖为准；冲突项不能作为现行默认。
+
 # 公文母版结构清单
 
 - 参考文件：assets/reference.docx

@@ -1,0 +1,73 @@
+{
+  "complete": true,
+  "paragraphs": [
+    {
+      "text": "城市公共数据质量抽检实施说明",
+      "role": "title"
+    },
+    {
+      "text": "抽检目标",
+      "role": "heading-2",
+      "numbering": "template"
+    },
+    {
+      "text": "本次抽检用于识别数据缺失、重复及更新延迟，形成可以复核的问题清单。",
+      "role": "body"
+    },
+    {
+      "text": "统计日期：2026年10月21日",
+      "role": "body"
+    },
+    {
+      "text": "实施范围",
+      "role": "heading-2",
+      "numbering": "template"
+    },
+    {
+      "text": "基础数据核对",
+      "role": "heading-3",
+      "numbering": "template"
+    },
+    {
+      "text": "选择三个公开数据目录，逐项核对字段定义和更新时间。",
+      "role": "body"
+    },
+    {
+      "text": "异常复核",
+      "role": "heading-3",
+      "numbering": "template"
+    },
+    {
+      "text": "说明：发现异常后应记录原始证据，不直接修改来源数据。",
+      "role": "body"
+    },
+    {
+      "text": "结果记录",
+      "role": "heading-2",
+      "numbering": "template"
+    },
+    {
+      "text": "以下汇总本次抽检的分类记录。",
+      "role": "body"
+    },
+    {
+      "text": "处置要求",
+      "role": "heading-2",
+      "numbering": "template"
+    },
+    {
+      "text": "1. 先保存证据，再安排复核。",
+      "role": "body"
+    },
+    {
+      "text": "2. 复核通过后登记处理结果。",
+      "role": "body"
+    }
+  ],
+  "tables": [
+    {
+      "index": 0,
+      "title": "抽检分类记录"
+    }
+  ]
+}

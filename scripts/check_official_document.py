@@ -10,18 +10,26 @@ TABLE_TITLE=re.compile(r'^表\s*\d+\s{1,3}\S+')
 ZH_EN_SPACE=re.compile(r'(?<=[\u4e00-\u9fff])\s+(?=[A-Za-z])|(?<=[A-Za-z])\s+(?=[\u4e00-\u9fff])')
 from table_semantics import is_prose_cell
 from caption_format import CAPTION, caption_profile, effective_run, signature
+from structure_rules import structure_failures
+from semantic_contract import role_map_failures, indent_failures
+from policy import POLICY
+from effective_format import enabled, typography_failures, paragraph_props
 def bold(el): return el is not None and any(n is not None and n.get(q('val')) not in {'0','false','off'} for n in (el.find(q('b')), el.find(q('bCs'))))
-def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None):
+def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None, keep_toc=False, keep_bullets=False, heading_start=2, role_map=None, expected_heading_indent_chars=2):
  m=OOXMLModel(path); failures=[]; records=list(m.paragraphs())
+ if role_map: failures.extend(role_map_failures(m,role_map))
+ failures.extend(indent_failures(m,expected_heading_indent_chars))
+ failures.extend(typography_failures(m,expected_half_points))
+ failures.extend(structure_failures(m,keep_toc=keep_toc,keep_bullets=keep_bullets,heading_start=heading_start))
  if require_full_pagination_controls:
   for i,p in enumerate(m.doc.xpath('.//w:body//w:p',namespaces=ns)):
    pp=p.find(q('pPr'))
    for tag in ('widowControl','keepNext','keepLines'):
-    if pp is None or pp.find(q(tag)) is None:
+    if pp is None or not enabled(pp.find(q(tag))):
      failures.append(f'paragraph {i} lacks required {tag} pagination control')
   for i,row in enumerate(m.doc.xpath('.//w:body//w:tbl/w:tr',namespaces=ns)):
    trpr=row.find(q('trPr'))
-   if trpr is None or trpr.find(q('cantSplit')) is None:
+   if trpr is None or not enabled(trpr.find(q('cantSplit'))):
     failures.append(f'table row {i} lacks cantSplit')
  if expected_line_multiple is not None or require_snap_to_grid_off or expected_before_lines is not None or expected_after_lines is not None:
   expected_line=str(round(float(expected_line_multiple)*240)) if expected_line_multiple is not None else None
@@ -115,14 +123,17 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
     r=m.effective(sid,'rPr'); sz=r.find(q('sz'))
     if sz is None or sz.get(q('val'))!=str(expected_half_points): failures.append(f'style {sid} ({m.style_name(sid)}) lacks requested size {expected_half_points}')
   for p in records:
-   if not p['num'] or not p['num'].get('level'): continue
+   if not p['num'] or p['num'].get('level') is None: continue
    lvl=p['num'].get('level'); ilvl=p['num'].get('ilvl')
    if ilvl not in {'1','2','3','4'}: continue
    rr=lvl.find(q('rPr')); sz=rr.find(q('sz')) if rr is not None else None
    if sz is None or sz.get(q('val'))!=str(expected_half_points): failures.append(f'numbering level {ilvl} lacks requested size {expected_half_points}')
  for rec in records:
   role=rec['role']; p=rec['element']; pp=rec['pPr']; ind=pp.find(q('ind')) if pp is not None else None
-  if role.startswith('heading-') and ind is not None and (ind.get(q('firstLine')) or ind.get(q('firstLineChars'))): failures.append(f'heading paragraph {rec["index"]} has body first-line indent')
+  if role.startswith('heading-') and rec['num'] and rec['num'].get('level') is not None:
+   marker=rec['num']['level'].find(q('lvlText'))
+   if marker is not None and re.match(r'^[\s\u3000]+',marker.get(q('val')) or ''):
+    failures.append(f'heading paragraph {rec["index"]} numbering embeds whitespace indentation')
   if rec['num'] and MARKER.match(rec['text']): failures.append(f'paragraph {rec["index"]} has effective numbering plus manual marker')
   if role=='heading-2':
    if bold(rec['effective_rPr']) or any(bold(r.find(q('rPr'))) for r in p.findall(q('r'))): failures.append(f'level-2 heading paragraph {rec["index"]} is bold')
@@ -141,4 +152,4 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
  if failures: print('FAIL'); print('\n'.join(failures)); return 1
  print('PASS'); return 0
 if __name__=='__main__':
- ap=argparse.ArgumentParser(); ap.add_argument('docx'); ap.add_argument('--expected-half-points',type=int); ap.add_argument('--require-full-pagination-controls',action='store_true'); ap.add_argument('--expected-line-multiple',type=float); ap.add_argument('--require-snap-to-grid-off',action='store_true'); ap.add_argument('--expected-before-lines',type=int); ap.add_argument('--expected-after-lines',type=int); ap.add_argument('--expected-table-after-lines',type=int); a=ap.parse_args(); sys.exit(main(a.docx,a.expected_half_points,a.require_full_pagination_controls,a.expected_line_multiple,a.require_snap_to_grid_off,a.expected_before_lines,a.expected_after_lines,a.expected_table_after_lines))
+ ap=argparse.ArgumentParser(); ap.add_argument('docx'); ap.add_argument('--expected-half-points',type=int); ap.add_argument('--require-full-pagination-controls',action='store_true'); ap.add_argument('--expected-line-multiple',type=float); ap.add_argument('--require-snap-to-grid-off',action='store_true'); ap.add_argument('--expected-before-lines',type=int); ap.add_argument('--expected-after-lines',type=int); ap.add_argument('--expected-table-after-lines',type=int); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=2); ap.add_argument('--role-map'); ap.add_argument('--expected-heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); sys.exit(main(a.docx,a.expected_half_points,a.require_full_pagination_controls,a.expected_line_multiple,a.require_snap_to_grid_off,a.expected_before_lines,a.expected_after_lines,a.expected_table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.expected_heading_indent_chars))
