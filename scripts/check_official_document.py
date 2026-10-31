@@ -120,7 +120,9 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
  if expected_half_points is not None:
   for sid,s in m.styles.items():
    role=m.role(sid)
-   if s.get(q('type'))=='paragraph' and (role=='body' or role in {f'heading-{i}' for i in range(1,6)}):
+   allowed_roles={'body',*(f'heading-{i}' for i in range(1,6))}
+   if format_profile: allowed_roles |= {'title','caption'}
+   if s.get(q('type'))=='paragraph' and role in allowed_roles:
     r=m.effective(sid,'rPr'); sz=r.find(q('sz'))
     expected_size=role_half_points(format_profile,expected_half_points,role) if format_profile else expected_half_points
     if sz is None or sz.get(q('val'))!=str(expected_size): failures.append(f'style {sid} ({m.style_name(sid)}) lacks requested size {expected_half_points}')

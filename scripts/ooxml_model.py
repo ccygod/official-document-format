@@ -27,6 +27,7 @@ class OOXMLModel:
    return 'other'
   name=(self.style_name(sid) or '').lower().replace(' ','')
   if name=='title' or name=='标题': return 'title'
+  if name in ('图片','caption','图注','表题'): return 'caption'
   if name in ('normal','正文'): return 'body'
   m=re.search(r'(?:heading|标题)([1-9])',name)
   if m:return f'heading-{m.group(1)}'

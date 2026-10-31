@@ -12,6 +12,18 @@
 | [jiassia/manuweave](https://github.com/jiassia/manuweave) | 路由式加载、公文/Word/LaTeX分片、原生对象保留、`UNVERIFIED`状态、复杂结构先阻断、模板来源和版本记录 | 仍需目标环境字体和渲染器；期刊模板不能当作通用规范 | 采用按需路由、状态不越级和结构分流 |
 | [wzbwan/gongwen-format-skill](https://github.com/wzbwan/gongwen-format-skill) | 受控Markdown、编号由上游内容决定、明确字体/行距/页码基线 | 只面向公文，受控输入不适合直接处理任意已有Word；许可证未声明 | 作为公文输入协议的可选模式，不作为通用推断器 |
 
+第二轮审计又对照了几类“验证优先”的实现：
+
+| 来源 | 审计得到的补充规则 | 本仓落地 |
+|---|---|---|
+| [Dmitry-Kov/ooxml-integrity](https://github.com/Dmitry-Kov/ooxml-integrity) | 只做结构一致不够，还要对比原件与成品的构造计数、关系、批注、脚注和修订；修复必须写入副本并再次检查 | 继续保留源哈希、正文内容指纹、包部件保护和二次幂等检查；复杂对象改为阻断或保留警告分流 |
+| [ooxml-tools/validate](https://github.com/ooxml-tools/validate) | 可按 Office 版本做 OOXML 包级校验，验证器应与版式检查分开 | 将结构检查、WPS视觉检查和可选外部OOXML验证列为三层证据，不把其中一层冒充另外两层 |
+| [AnswerDotAI/oxml](https://github.com/AnswerDotAI/oxml) | 原生对象、关系和未建模部件需要明确的保留边界；遇到修订、字段、节和依赖不能猜测修复 | 全Story inventory、`requires_specialist_review`与`preserve_only_warnings`分开；文本框/外部关系保留但必须视觉复核 |
+| [Microsoft Agent Academy document skill](https://github.com/microsoft/agent-academy/blob/main/docs/operative-nextgen/06-document-skill/index.md) | 内容采集、JSON结构化、脚本生成和证据等级分层，减少模型直接改Word的自由度 | 先生成完整`roles.json`，再由确定性脚本执行；报告明确“结构通过、视觉待验收” |
+| [wksudud/format-thesis-docx](https://github.com/wksudud/format-thesis-docx/blob/main/SKILL.md) / [h46373824-tech/format-thesis-docx-skill](https://github.com/h46373824-tech/format-thesis-docx-skill) | 先提取要求和审计，再在副本执行；低置信度规则暂停，保留未解决项和格式清单 | 格式包必须显式选择；不确定标题层级与复杂对象不通过“猜测”放行，报告保留可追溯字段 |
+
+这些仓库的许可证和目标范围不同，本项目只吸收公开的流程思想；没有复制代码、模板或受限素材。OOXML语义仍以[ECMA-376](https://ecma-international.org/publications-and-standards/standards/ecma-376/)和Microsoft对`keepNext`、主题字体及`rFonts`优先级的说明为准。
+
 ## 当前格式包
 
 `config/format-profiles/`目前提供：

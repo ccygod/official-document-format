@@ -16,11 +16,36 @@ ROOT=Path(__file__).resolve().parents[1]
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def inventory(path):
     m=OOXMLModel(path)
-    unsupported=[]
-    for label,xpath in [('content_controls','.//w:sdt'),('text_boxes','.//w:txbxContent'),('tracked_changes','.//w:ins|.//w:del'),('merged_cells','.//w:gridSpan|.//w:vMerge')]:
-        if m.doc.xpath(xpath,namespaces=ns):unsupported.append(label)
+    unsupported=[];warnings=[];parse_errors=[]
+    counts={}
+    with ZipFile(path) as z:
+        names=z.namelist()
+        for name in names:
+            if not (name.endswith('.xml') or name.endswith('.rels')):continue
+            try:etree.fromstring(z.read(name))
+            except (etree.XMLSyntaxError,KeyError):parse_errors.append(name)
+        xml_parts=[n for n in names if n.startswith('word/') and n.endswith('.xml')]
+        story_parts=[n for n in xml_parts if any(x in n for x in ('document.xml','header','footer','footnotes','endnotes','comments','commentsExtended'))]
+        for name in story_parts:
+            try:root=etree.fromstring(z.read(name))
+            except (etree.XMLSyntaxError,KeyError):continue
+            for label,xpath in [('content_controls','.//w:sdt'),('text_boxes','.//w:txbxContent'),('tracked_changes','.//w:ins|.//w:del'),('merged_cells','.//w:gridSpan|.//w:vMerge'),('fields','.//w:fldSimple|.//w:instrText'),('bookmarks','.//w:bookmarkStart'),('alt_chunks','.//w:altChunk')]:
+                counts[label]=counts.get(label,0)+len(root.xpath(xpath,namespaces=ns))
+            counts['nested_tables']=counts.get('nested_tables',0)+len(root.xpath('.//w:tbl//w:tbl',namespaces=ns))
+        rel_parts=[n for n in names if n.endswith('.rels')]
+        for name in rel_parts:
+            try:root=etree.fromstring(z.read(name))
+            except (etree.XMLSyntaxError,KeyError):continue
+            counts['external_relationships']=counts.get('external_relationships',0)+len(root.xpath('//*[local-name()="Relationship"][@*[local-name()="TargetMode"]="External"]'))
+        counts['macros']=sum(n.endswith('vbaProject.bin') for n in names)
+        counts['digital_signatures']=sum(n.startswith('_xmlsignatures/') for n in names)
+    for label in ('content_controls','tracked_changes','merged_cells','alt_chunks','nested_tables','macros','digital_signatures'):
+        if counts.get(label,0):unsupported.append(label)
+    if parse_errors:unsupported.append('malformed_xml')
+    for label in ('text_boxes','external_relationships','fields','bookmarks'):
+        if counts.get(label):warnings.append(label)
     if len(m.doc.xpath('.//w:sectPr',namespaces=ns))>1:unsupported.append('multiple_sections')
-    return {'source_sha256':digest(path),'paragraphs':[{'index':r['index'],'text':r['text'],'source_role':r['role']} for r in m.paragraphs()], 'tables':len(m.doc.xpath('.//w:tbl',namespaces=ns)),'images':len(m.doc.xpath('.//w:drawing',namespaces=ns)),'requires_specialist_review':unsupported}
+    return {'source_sha256':digest(path),'story_parts':story_parts,'story_counts':counts,'package_parse_errors':parse_errors,'paragraphs':[{'index':r['index'],'text':r['text'],'source_role':r['role']} for r in m.paragraphs()], 'tables':len(m.doc.xpath('.//w:tbl',namespaces=ns)),'images':len(m.doc.xpath('.//w:drawing',namespaces=ns)),'requires_specialist_review':unsupported,'preserve_only_warnings':warnings}
 def content_signature(path):
     m=OOXMLModel(path)
     return [''.join(p.xpath('.//w:t/text()',namespaces=ns)) for p in m.doc.xpath('.//w:body//w:p',namespaces=ns)]

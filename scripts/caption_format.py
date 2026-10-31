@@ -7,6 +7,11 @@ from ooxml_model import q, ns
 CAPTION = re.compile(r'^(?:图|表)\s*\d+(?:\s|[.、：:]|$)')
 FIGURE = re.compile(r'^图\s*\d+(?:\s|[.、：:]|$)')
 FALSE = {'0', 'false', 'off'}
+RPR_ORDER = {
+    'rStyle': 10, 'rFonts': 20, 'kern': 30, 'lang': 40,
+    'sz': 50, 'szCs': 60, 'b': 70, 'bCs': 80,
+    'i': 90, 'iCs': 100, 'color': 110, 'u': 120,
+}
 
 def text(p):
     return ''.join(p.xpath('.//w:t/text()', namespaces=ns)).strip()
@@ -52,6 +57,15 @@ def signature(rpr):
     return (tuple(fonts.get(q(k)) for k in ('ascii', 'hAnsi', 'eastAsia', 'cs')) if fonts is not None else (),
             val('sz'), val('szCs', val('sz')), on('b'), on('bCs'), on('i'), on('iCs'), val('color', '000000'))
 
+def canonicalize_rpr(rpr):
+    """Make caption run-property child order deterministic for idempotence."""
+    children=list(rpr)
+    for child in children:
+        rpr.remove(child)
+    for child in sorted(enumerate(children), key=lambda item: (RPR_ORDER.get(etree.QName(item[1]).localname, 1000), item[0])):
+        rpr.append(child[1])
+    return rpr
+
 def caption_profile(root, styles):
     image_sid = next((sid for sid, s in styles.items() if s.xpath('./w:name/@w:val', namespaces=ns) == ['图片']), None)
     if image_sid is None:
@@ -71,7 +85,7 @@ def caption_profile(root, styles):
         n.set(q('val'), '0')
     rstyle = rpr.find(q('rStyle'))
     if rstyle is not None: rpr.remove(rstyle)
-    return image_sid, rpr
+    return image_sid, canonicalize_rpr(rpr)
 
 def normalize_captions(root, styles):
     sid, profile = caption_profile(root, styles)

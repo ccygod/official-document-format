@@ -40,7 +40,12 @@ def typography_failures(model,half_points,format_profile=None):
     failures=[]
     for row in model.paragraphs():
         role=row['role']
-        if role!='body' and role not in {f'heading-{i}' for i in range(1,6)}:continue
+        allowed={'body',*(f'heading-{i}' for i in range(1,6))}
+        # Figure/table captions are canonicalized by normalize_captions after
+        # this pass. Rewriting their typography here would reorder bold nodes
+        # on the next pass and break package-level idempotence.
+        if format_profile: allowed |= {'title'}
+        if role not in allowed:continue
         p=row['element'];expected=style_props(model,row['style_id'],'rPr')
         ef=expected.find(q('rFonts'));expected_font=ef.get(q('eastAsia')) if ef is not None else None
         for r in p.xpath('.//w:r[w:t]',namespaces=ns):
@@ -62,7 +67,9 @@ def normalize_text_format(model,half_points,format_profile=None):
     # Preserve body emphasis, links, breaks and runs. Typography belongs to roles.
     for row in model.paragraphs():
         role=row['role']
-        if role!='body' and role not in {f'heading-{i}' for i in range(1,6)}:continue
+        allowed={'body',*(f'heading-{i}' for i in range(1,6))}
+        if format_profile: allowed |= {'title','caption'}
+        if role not in allowed:continue
         expected=style_props(model,row['style_id'],'rPr');fonts=expected.find(q('rFonts'))
         for r in row['element'].xpath('.//w:r[w:t]',namespaces=ns):
             rp=r.find(q('rPr'))

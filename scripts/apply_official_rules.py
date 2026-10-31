@@ -63,6 +63,7 @@ def effective_child(styles, sid, container, child):
 def heading_role(name):
     low=(name or '').lower().replace(' ','')
     if low in ('title','标题'): return 'title'
+    if low in ('图片','caption','图注','表题'): return 'caption'
     if low in ('normal','正文'): return 'body'
     m=re.search(r'(?:heading|标题)([1-9])',low)
     if m: return 'heading-'+m.group(1)
@@ -85,6 +86,7 @@ def set_style_size_and_spacing(styles, body_half, line, before_lines=0, after_li
             for attr in ('hanging','hangingChars'):ind.attrib.pop(q(attr),None)
             for attr,value in [('left','0'),('leftChars','0'),('firstLine',str(round(chars*body_half*10))),('firstLineChars',str(round(chars*100)))]:
                 ind.set(q(attr),value)
+        if role in {'body','title','caption'} or role.startswith('heading-'):
             rp=st.find('w:rPr',NS)
             if rp is None: rp=etree.SubElement(st,q('rPr'))
             fonts=ensure(rp,'rFonts')
