@@ -2,6 +2,7 @@
 from copy import deepcopy
 from lxml import etree
 from ooxml_model import q, ns
+from format_profiles import role_half_points
 FALSE={'0','false','off'}
 def enabled(node):
     return node is not None and node.get(q('val'),'1').lower() not in FALSE
@@ -35,7 +36,7 @@ def run_props(model,p,r):
 def paragraph_props(model,p):
     return merge(style_props(model,model.p_style(p),'pPr'),p.find(q('pPr')))
 
-def typography_failures(model,half_points):
+def typography_failures(model,half_points,format_profile=None):
     failures=[]
     for row in model.paragraphs():
         role=row['role']
@@ -45,7 +46,8 @@ def typography_failures(model,half_points):
         for r in p.xpath('.//w:r[w:t]',namespaces=ns):
             actual=run_props(model,p,r);text=''.join(r.xpath('.//w:t/text()',namespaces=ns))
             size=actual.find(q('sz'))
-            if half_points is not None and (size is None or size.get(q('val'))!=str(half_points)):
+            expected_size=role_half_points(format_profile,half_points,role) if format_profile else half_points
+            if half_points is not None and (size is None or size.get(q('val'))!=str(expected_size)):
                 failures.append(f'paragraph {row["index"]} effective run size differs from {half_points}')
             font=actual.find(q('rFonts'))
             if font is not None and any('theme' in etree.QName(k).localname.lower() for k in font.attrib):
@@ -56,7 +58,7 @@ def typography_failures(model,half_points):
                 failures.append(f'paragraph {row["index"]} effective heading weight differs from style')
     return failures
 
-def normalize_text_format(model,half_points):
+def normalize_text_format(model,half_points,format_profile=None):
     # Preserve body emphasis, links, breaks and runs. Typography belongs to roles.
     for row in model.paragraphs():
         role=row['role']
@@ -72,7 +74,8 @@ def normalize_text_format(model,half_points):
                 for key in list(frozen.attrib):
                     if 'theme' in etree.QName(key).localname.lower():del frozen.attrib[key]
                 rp.append(frozen)
-            for tag in ('sz','szCs'):etree.SubElement(rp,q(tag)).set(q('val'),str(half_points))
+            expected_size=role_half_points(format_profile,half_points,role) if format_profile else half_points
+            for tag in ('sz','szCs'):etree.SubElement(rp,q(tag)).set(q('val'),str(expected_size))
             if role.startswith('heading-'):
                 for tag in ('b','bCs'):
                     for x in rp.findall(q(tag)):rp.remove(x)

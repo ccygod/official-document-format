@@ -1,0 +1,32 @@
+{
+  "id": "official_cn",
+  "display_name": "中文公文",
+  "description": "按保留WPS公文母版处理，正文从标题2开始。",
+  "line_multiple": 1.35,
+  "body_indent_chars": 2,
+  "heading_indent_chars": 2,
+  "fonts": {
+    "body": "仿宋_GB2312",
+    "heading_1": "黑体",
+    "heading_2": "黑体",
+    "heading_3": "楷体",
+    "heading_4": "宋体",
+    "heading_5": "宋体",
+    "title": "宋体",
+    "caption": "宋体"
+  },
+  "ratios": {
+    "title": 1.5,
+    "heading_1": 1.15,
+    "heading_2": 1.0,
+    "heading_3": 1.0,
+    "heading_4": 1.0,
+    "heading_5": 1.0,
+    "caption": 0.875,
+    "body": 1.0
+  },
+  "numbering": {
+    "heading_start": 2,
+    "template_levels": true
+  }
+}

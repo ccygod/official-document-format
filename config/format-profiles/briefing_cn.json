@@ -1,0 +1,32 @@
+{
+  "id": "briefing_cn",
+  "display_name": "中文汇报材料",
+  "description": "面向校领导、客户和内部汇报的清晰层级与阅读节奏。",
+  "line_multiple": 1.35,
+  "body_indent_chars": 2,
+  "heading_indent_chars": 2,
+  "fonts": {
+    "body": "仿宋_GB2312",
+    "heading_1": "黑体",
+    "heading_2": "楷体",
+    "heading_3": "仿宋_GB2312",
+    "heading_4": "仿宋_GB2312",
+    "heading_5": "仿宋_GB2312",
+    "title": "方正小标宋简体",
+    "caption": "宋体"
+  },
+  "ratios": {
+    "title": 1.5,
+    "heading_1": 1.2,
+    "heading_2": 1.1,
+    "heading_3": 1.0,
+    "heading_4": 1.0,
+    "heading_5": 1.0,
+    "caption": 0.875,
+    "body": 1.0
+  },
+  "numbering": {
+    "heading_start": 2,
+    "template_levels": true
+  }
+}

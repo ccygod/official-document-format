@@ -1,4 +1,4 @@
-# 公文格式skill
+# 多格式文档格式Skill
 
 **标题、正文、图片、图表说明，都在同一套公文样式里。**
 
@@ -8,21 +8,36 @@
 
 写完内容之后，常常还剩一轮细碎排版：标题与编号对不齐，标题和正文缩进不符合本次要求，图片和图注分开，表格换页后失去表头。**official-document-format把你选定的母版、段落角色、格式处理和成品检查组织成一个可复用流程。**
 
-适用于项目方案、机构汇报和需要正式Word/WPS交付的材料。基于作者亲自设计并反复校正的样式体系，保留现有母版的层级与结构。
+适用于中文公文、校领导/客户汇报、行业报告、中文学位论文和技术手册。正式Word/WPS模板优先；没有模板时选择对应格式包。
 
-## v1.1.0：从原文到可核对成品
+## v1.2.0：先选格式，再选字号
 
 本轮把反复出现的问题收敛为统一入口和真实属性检查，新增[验证记录与能力边界](docs/validation.md)。默认从标题2开始，内容标题与正文均首行缩进2字符；主标题居中。下方旧的五级展示明确演示“保留标题1”的可选模式，不代表默认必须使用标题1。
 
 ```sh
+python scripts/pipeline.py formats
 python scripts/pipeline.py inspect input.docx --out inventory.json
-# 阅读原文并独立复核完整roles.json；正文字号须由用户明确确认
-python scripts/pipeline.py format input.docx output.docx --role-map roles.json --body-half-points 24 --report audit.json
+# 先选择格式，再确认正文字号，然后形成完整roles.json
+python scripts/pipeline.py format input.docx output.docx \
+  --format-profile official_cn --role-map roles.json \
+  --body-half-points 24 --report audit.json
 ```
+
+格式包选择：
+
+| id | 用途 |
+|---|---|
+| `official_cn` | 中文公文，默认从标题2开始 |
+| `briefing_cn` | 中文汇报材料 |
+| `industry_report_cn` | 中文行业报告 |
+| `academic_thesis_cn` | 中文学位论文通用起点 |
+| `technical_manual_cn` | 中文技术手册 |
+
+格式包定义相对字号比例。用户选正文12磅或14磅后，标题、编号、题注和其他角色按格式包自动计算。用户提供学校、单位、期刊或客户正式模板时，模板优先于通用格式包。详见[多格式路线与外部借鉴](docs/format-ecosystem.md)。
 
 可下载[陌生合成原稿](examples/forward-case/input.docx)、[对应角色与表题清单](examples/forward-case/roles.json)、[处理结果](examples/forward-case/output.docx)。该案例经过独立评估，现已纳入回归，不作为未来的未见测试集。
 
-44项自动化测试通过不等于所有新文档自动正确。入口分别记录结构检查、内容保留和重复处理，视觉状态保持待验收；WPS逐页检查后才能交付。内容控件、文本框、修订、多节混排和合并单元格预检分流。复杂排版请查看Skill的适用边界。
+47项自动化测试通过不等于所有新文档自动正确。入口分别记录结构检查、内容保留和重复处理，视觉状态保持待验收；WPS逐页检查后才能交付。内容控件、文本框、修订、多节混排和合并单元格预检分流。复杂排版请查看Skill的适用边界。
 
 ## 先看完整示例
 

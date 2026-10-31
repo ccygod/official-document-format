@@ -1,0 +1,32 @@
+{
+  "id": "academic_thesis_cn",
+  "display_name": "中文学位论文",
+  "description": "中文论文、学位论文和学校论文模板的通用起点；学校模板优先。",
+  "line_multiple": 1.5,
+  "body_indent_chars": 2,
+  "heading_indent_chars": 0,
+  "fonts": {
+    "body": "宋体",
+    "heading_1": "黑体",
+    "heading_2": "黑体",
+    "heading_3": "宋体",
+    "heading_4": "宋体",
+    "heading_5": "宋体",
+    "title": "宋体",
+    "caption": "宋体"
+  },
+  "ratios": {
+    "title": 1.5,
+    "heading_1": 1.25,
+    "heading_2": 1.1,
+    "heading_3": 1.0,
+    "heading_4": 1.0,
+    "heading_5": 1.0,
+    "caption": 0.875,
+    "body": 1.0
+  },
+  "numbering": {
+    "heading_start": 2,
+    "template_levels": true
+  }
+}

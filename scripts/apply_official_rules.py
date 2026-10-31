@@ -21,6 +21,7 @@ from structure_rules import normalize_structure
 from semantic_contract import apply_role_map, materialize_indents
 from policy import POLICY
 from effective_format import normalize_text_format
+from format_profiles import role_half_points
 
 
 def ensure(parent, tag):
@@ -68,7 +69,7 @@ def heading_role(name):
     if '5级标题' in name: return 'heading-5'
     return 'other'
 
-def set_style_size_and_spacing(styles, body_half, line, before_lines=0, after_lines=25, heading_indent_chars=2):
+def set_style_size_and_spacing(styles, body_half, line, before_lines=0, after_lines=25, heading_indent_chars=2, format_profile=None):
     role_to_id={}
     for sid,st in styles.items():
         if st.get(q('type'))=='paragraph':role_to_id.setdefault(heading_role(style_name(st)),sid)
@@ -92,11 +93,22 @@ def set_style_size_and_spacing(styles, body_half, line, before_lines=0, after_li
                 for key,value in inherited.attrib.items():fonts.set(key,value)
             for key in list(fonts.attrib):
                 if 'theme' in etree.QName(key).localname.lower():del fonts.attrib[key]
+            role_size=role_half_points(format_profile,body_half,role) if format_profile else body_half
             for tag in ('sz','szCs'):
-                el=ensure(rp,tag); el.set(q('val'),str(body_half))
+                el=ensure(rp,tag); el.set(q('val'),str(role_size))
+            if format_profile:
+                font=format_profile.get('fonts',{}).get(role.replace('-','_'))
+                if font:
+                    for attr in ('ascii','hAnsi','eastAsia','cs'):fonts.set(q(attr),'Times New Roman' if attr in ('ascii','hAnsi','cs') else font)
+                if role.startswith('heading-'):
+                    bold_value=bool(format_profile.get('bold',{}).get(role.replace('-','_'), role in {'heading-3'}))
+                    for tag in ('b','bCs'):
+                        old=rp.find(q(tag))
+                        if old is None:old=etree.SubElement(rp,q(tag))
+                        old.set(q('val'),'1' if bold_value else '0')
     return role_to_id
 
-def set_numbering(num, styles, body_half, role_to_id):
+def set_numbering(num, styles, body_half, role_to_id, format_profile=None):
     # Map numbering levels to heading roles; level 1 is heading 2 because level 0 is the chapter role.
     for abstract in num.xpath('.//w:abstractNum',namespaces=NS):
         for lvl in abstract.findall('w:lvl',NS):
@@ -116,14 +128,17 @@ def set_numbering(num, styles, body_half, role_to_id):
                     # heading marker. They stack with real paragraph indentation.
                     marker.set(q('val'),(marker.get(q('val')) or '').lstrip(' \t\u3000'))
             rp=ensure(lvl,'rPr')
-            for tag in ('sz','szCs'):
-                ensure(rp,tag).set(q('val'),str(body_half))
             sid=linked_id if linked_id in styles else role_to_id.get('heading-'+str(min(ilvl+1,5)))
+            role=heading_role(style_name(styles[sid])) if sid in styles else 'body'
+            role_size=role_half_points(format_profile,body_half,role) if format_profile else body_half
+            for tag in ('sz','szCs'):
+                ensure(rp,tag).set(q('val'),str(role_size))
             if ilvl==1:
-                # Heading 2 is regular Hei; a retained bold list symbol must
-                # not survive when the text itself is regular.
-                for tag in ('b','bCs'):
-                    ensure(rp,tag).set(q('val'),'0')
+                # Heading 2 is regular Hei; a retained bold list symbol must not survive.
+                for tag in ('b','bCs'): ensure(rp,tag).set(q('val'),'0')
+            elif format_profile and role.startswith('heading-'):
+                bold_value=bool(format_profile.get('bold',{}).get(role.replace('-','_'), role in {'heading-3'}))
+                for tag in ('b','bCs'): ensure(rp,tag).set(q('val'),'1' if bold_value else '0')
             font=effective_child(styles,sid,'rPr','rFonts') if sid else None
             if font is not None:
                 old=rp.find('w:rFonts',NS)
@@ -178,7 +193,7 @@ def patch_tables(root, full_pagination, styles):
                         for tag in ('widowControl','keepNext','keepLines'): set_on(pp,tag)
                     else:ensure(pp,'keepNext').set(q('val'),'0')
 
-def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_lines=25,table_after_lines=50,keep_toc=False,keep_bullets=False,heading_start=2,role_map=None,heading_indent_chars=2):
+def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_lines=25,table_after_lines=50,keep_toc=False,keep_bullets=False,heading_start=2,role_map=None,heading_indent_chars=2,format_profile=None):
     line=round(float(line_multiple)*240)
     with ZipFile(src,'r') as z: files={n:z.read(n) for n in z.namelist()}
     model=OOXMLModel(src)
@@ -191,15 +206,15 @@ def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_li
     for fonts in styles.xpath("./w:docDefaults/w:rPrDefault/w:rPr/w:rFonts",namespaces=NS):
         for attr in list(fonts.attrib):
             if "theme" in etree.QName(attr).localname.lower():del fonts.attrib[attr]
-    role_to_id=set_style_size_and_spacing(style_map,body_half,line,before_lines,after_lines,heading_indent_chars)
+    role_to_id=set_style_size_and_spacing(style_map,body_half,line,before_lines,after_lines,heading_indent_chars,format_profile)
     files['word/styles.xml']=etree.tostring(styles,xml_declaration=True,encoding='UTF-8',standalone=True)
     if 'word/numbering.xml' in files:
         num=etree.fromstring(files['word/numbering.xml'])
         set_numbering.used_heading_levels={(r['num']['abstractNumId'],r['num']['ilvl']) for r in model.paragraphs() if r['role'].startswith('heading-') and r['num']}
-        set_numbering(num,style_map,body_half,role_to_id)
+        set_numbering(num,style_map,body_half,role_to_id,format_profile)
         files['word/numbering.xml']=etree.tostring(num,xml_declaration=True,encoding='UTF-8',standalone=True)
     materialize_indents(model,body_half,heading_indent_chars)
-    normalize_text_format(model,body_half)
+    normalize_text_format(model,body_half,format_profile)
     doc=model.doc
     if not full_pagination:
         # Old documents may have linked every body paragraph into one chain.
@@ -217,4 +232,4 @@ def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_li
     tmp.replace(out)
 
 if __name__=='__main__':
-    ap=ArgumentParser(); ap.add_argument('input'); ap.add_argument('output'); ap.add_argument('--body-half-points',type=int,required=True); ap.add_argument('--line-multiple',type=float,default=POLICY['line_multiple']); ap.add_argument('--before-lines',type=int,default=POLICY['before_lines']); ap.add_argument('--after-lines',type=int,default=POLICY['after_lines']); ap.add_argument('--table-after-lines',type=int,default=POLICY['table_after_lines']); ap.add_argument('--full-pagination-controls',action='store_true'); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=POLICY['heading_start']); ap.add_argument('--role-map'); ap.add_argument('--heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); main(a.input,a.output,a.body_half_points,a.line_multiple,a.full_pagination_controls,a.before_lines,a.after_lines,a.table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.heading_indent_chars)
+    ap=ArgumentParser(); ap.add_argument('input'); ap.add_argument('output'); ap.add_argument('--body-half-points',type=int,required=True); ap.add_argument('--format-profile'); ap.add_argument('--line-multiple',type=float,default=POLICY['line_multiple']); ap.add_argument('--before-lines',type=int,default=POLICY['before_lines']); ap.add_argument('--after-lines',type=int,default=POLICY['after_lines']); ap.add_argument('--table-after-lines',type=int,default=POLICY['table_after_lines']); ap.add_argument('--full-pagination-controls',action='store_true'); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=POLICY['heading_start']); ap.add_argument('--role-map'); ap.add_argument('--heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); from format_profiles import load_profile; main(a.input,a.output,a.body_half_points,a.line_multiple,a.full_pagination_controls,a.before_lines,a.after_lines,a.table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.heading_indent_chars,load_profile(a.format_profile) if a.format_profile else None)

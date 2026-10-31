@@ -1,22 +1,24 @@
 ---
 name: official-document-format
-description: "按保留母版处理中文Word公文格式，识别内容层级并检查真实生效样式、编号、缩进和图表。用户选择公文格式或调用$official-document-format时使用。"
+description: "按保留母版处理中文Word公文、汇报、行业报告、论文和技术手册，先路由格式和字号，再检查真实生效样式、编号、缩进和图表。用户选择文档格式或调用$official-document-format时使用。"
 ---
 
-# 公文格式Skill
+# 多格式文档格式Skill
 
-目标：在不擅改内容的前提下，按母版和用户本次要求调整DOCX，交付前检查结构、真实生效格式和渲染效果。语义判断由模型承担，重复格式操作由脚本完成。
+目标：在不擅改内容的前提下，先选择文档格式，再确认正文字号，随后按格式包或用户模板调整DOCX，交付前检查结构、真实生效格式和渲染效果。`official_cn`是第一个格式包，不再是唯一格式。
 
 ## 开始前
 
 - 用户必须明确正文字号，例如小四12磅、四号14磅。当前会话已确认的字号有效，不重复追问。标题字号不能替代正文字号确认。
+- 用户必须明确格式来源：`official_cn`中文公文、`briefing_cn`中文汇报材料、`industry_report_cn`中文行业报告、`academic_thesis_cn`中文学位论文、`technical_manual_cn`中文技术手册，或用户提供的正式模板。没有格式选择不能开工。
+- 先选格式，再选正文大小。小四12磅=`24`半磅、四号14磅=`28`半磅；标题、题注、编号和页码按格式包比例计算。
 - 读取`artifact-template.json`与`config/official.json`。原始母版保持不变。当前规则以配置和用户本次覆盖为准，原母版清单只是来源证据。
 - 仅改格式时保留文字、表格、图片、链接和页眉页脚。不要补造副标题、样例说明或占位内容。内容润色、重写须来自用户要求。
 - 用当前环境Python运行脚本，依赖见`requirements.txt`；Codex桌面可通过workspace dependency loader获取解释器。不要硬编码开发者机器路径。
 
 ## 先理解全文，再决定结构
 
-运行`python scripts/pipeline.py inspect input.docx --out inventory.json`，阅读完整正文、表格和异常结构报告。不要按字体大小、是否加粗、某几个关键词或旧样式机械决定标题。
+运行`python scripts/pipeline.py formats`查看可选格式，再运行`python scripts/pipeline.py inspect input.docx --out inventory.json`，阅读完整正文、表格和异常结构报告。不要按字体大小、是否加粗、某几个关键词或旧样式机械决定标题。
 
 结合内容用途、并列段落、上下级关系识别主标题、章节标题、正文、字段和有序步骤。内容顶层默认使用模板标题2，下一层标题3；主Title单独居中。不要把姓名、日期、短字段、正文步骤误升为标题。默认无目录、无圆点项目符号；实际步骤编号和正文中的点号不属于圆点列表。
 
@@ -27,12 +29,15 @@ description: "按保留母版处理中文Word公文格式，识别内容层级�
 ## 统一执行入口
 
 ```sh
-python scripts/pipeline.py format prepared.docx output.docx --role-map roles.json --body-half-points 24 --report audit.json
+python scripts/pipeline.py formats
+python scripts/pipeline.py format prepared.docx output.docx \
+  --format-profile official_cn --role-map roles.json \
+  --body-half-points 24 --report audit.json
 ```
 
 入口导入母版样式到源文档包，保留源关系、媒体与页面结构；依次格式化、列宽分配、检查、内容对账、重复处理检查和包保留检查。输出与原件分开，失败不写入新成品。`audit.json`状态`structural_pass_visual_pending`只代表结构通过，尚未视觉验收。
 
-默认值在`config/official.json`：1.35倍行距，段前0、段后0.25行，表后首段段前0.5行；正文及内容标题均首行缩进2字符，主标题/图注/表题保持其角色对齐。标题2常规黑体，标题3加粗楷体。正文字号同时用于正文、标题1–5及对应编号，主Title大小单独处理。
+公共默认值在`config/official.json`，格式包在`config/format-profiles/`：正文及内容标题的字体、缩进、行距和相对字号由所选格式决定；用户提供正式模板时模板优先。正文字号同时用于正文、标题1–5及对应编号，主Title、图注和表题按格式包比例自适应。
 
 用户要求标题顶格时传`--heading-indent-chars 0`；明确保留标题1时传`--heading-start 1`。全文启用三项分页控制时传`--full-pagination-controls`；keepNext可能把连续段落连成大块，必须检查实际分页，不能仅凭节点存在判定通过。
 
@@ -54,3 +59,7 @@ python scripts/pipeline.py format prepared.docx output.docx --role-map roles.jso
 ## 维护与测试
 
 修改后运行`python -m unittest discover -s scripts -p 'test_*.py' -v`。保留错误注入反例（字体字号覆盖、分页显式关闭、列宽极端输入、无关列表保留），并从原文出发测试陌生材料，不预先提供正确答案。真实客户材料只在本地回归；公开样例使用原创虚构内容。
+
+## 多格式借鉴
+
+格式路由、论文/报告/技术手册边界、外部仓库借鉴和许可证说明见[多格式路线与外部借鉴](docs/format-ecosystem.md)。外部仓库的代码、模板和受限素材不直接复制。

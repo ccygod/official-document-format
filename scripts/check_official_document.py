@@ -14,12 +14,13 @@ from structure_rules import structure_failures
 from semantic_contract import role_map_failures, indent_failures
 from policy import POLICY
 from effective_format import enabled, typography_failures, paragraph_props
+from format_profiles import load_profile, role_half_points
 def bold(el): return el is not None and any(n is not None and n.get(q('val')) not in {'0','false','off'} for n in (el.find(q('b')), el.find(q('bCs'))))
-def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None, keep_toc=False, keep_bullets=False, heading_start=2, role_map=None, expected_heading_indent_chars=2):
+def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None, keep_toc=False, keep_bullets=False, heading_start=2, role_map=None, expected_heading_indent_chars=2, format_profile=None):
  m=OOXMLModel(path); failures=[]; records=list(m.paragraphs())
  if role_map: failures.extend(role_map_failures(m,role_map))
  failures.extend(indent_failures(m,expected_heading_indent_chars))
- failures.extend(typography_failures(m,expected_half_points))
+ failures.extend(typography_failures(m,expected_half_points,format_profile))
  failures.extend(structure_failures(m,keep_toc=keep_toc,keep_bullets=keep_bullets,heading_start=heading_start))
  if require_full_pagination_controls:
   for i,p in enumerate(m.doc.xpath('.//w:body//w:p',namespaces=ns)):
@@ -121,13 +122,16 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
    role=m.role(sid)
    if s.get(q('type'))=='paragraph' and (role=='body' or role in {f'heading-{i}' for i in range(1,6)}):
     r=m.effective(sid,'rPr'); sz=r.find(q('sz'))
-    if sz is None or sz.get(q('val'))!=str(expected_half_points): failures.append(f'style {sid} ({m.style_name(sid)}) lacks requested size {expected_half_points}')
+    expected_size=role_half_points(format_profile,expected_half_points,role) if format_profile else expected_half_points
+    if sz is None or sz.get(q('val'))!=str(expected_size): failures.append(f'style {sid} ({m.style_name(sid)}) lacks requested size {expected_half_points}')
   for p in records:
    if not p['num'] or p['num'].get('level') is None: continue
    lvl=p['num'].get('level'); ilvl=p['num'].get('ilvl')
    if ilvl not in {'1','2','3','4'}: continue
    rr=lvl.find(q('rPr')); sz=rr.find(q('sz')) if rr is not None else None
-   if sz is None or sz.get(q('val'))!=str(expected_half_points): failures.append(f'numbering level {ilvl} lacks requested size {expected_half_points}')
+   role_for_number=p['role']
+   expected_size=role_half_points(format_profile,expected_half_points,role_for_number) if format_profile else expected_half_points
+   if sz is None or sz.get(q('val'))!=str(expected_size): failures.append(f'numbering level {ilvl} lacks requested size {expected_size}')
  for rec in records:
   role=rec['role']; p=rec['element']; pp=rec['pPr']; ind=pp.find(q('ind')) if pp is not None else None
   if role.startswith('heading-') and rec['num'] and rec['num'].get('level') is not None:
@@ -152,4 +156,4 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
  if failures: print('FAIL'); print('\n'.join(failures)); return 1
  print('PASS'); return 0
 if __name__=='__main__':
- ap=argparse.ArgumentParser(); ap.add_argument('docx'); ap.add_argument('--expected-half-points',type=int); ap.add_argument('--require-full-pagination-controls',action='store_true'); ap.add_argument('--expected-line-multiple',type=float); ap.add_argument('--require-snap-to-grid-off',action='store_true'); ap.add_argument('--expected-before-lines',type=int); ap.add_argument('--expected-after-lines',type=int); ap.add_argument('--expected-table-after-lines',type=int); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=2); ap.add_argument('--role-map'); ap.add_argument('--expected-heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); sys.exit(main(a.docx,a.expected_half_points,a.require_full_pagination_controls,a.expected_line_multiple,a.require_snap_to_grid_off,a.expected_before_lines,a.expected_after_lines,a.expected_table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.expected_heading_indent_chars))
+ ap=argparse.ArgumentParser(); ap.add_argument('docx'); ap.add_argument('--expected-half-points',type=int); ap.add_argument('--format-profile'); ap.add_argument('--require-full-pagination-controls',action='store_true'); ap.add_argument('--expected-line-multiple',type=float); ap.add_argument('--require-snap-to-grid-off',action='store_true'); ap.add_argument('--expected-before-lines',type=int); ap.add_argument('--expected-after-lines',type=int); ap.add_argument('--expected-table-after-lines',type=int); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=2); ap.add_argument('--role-map'); ap.add_argument('--expected-heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); sys.exit(main(a.docx,a.expected_half_points,a.require_full_pagination_controls,a.expected_line_multiple,a.require_snap_to_grid_off,a.expected_before_lines,a.expected_after_lines,a.expected_table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.expected_heading_indent_chars,load_profile(a.format_profile) if a.format_profile else None))
