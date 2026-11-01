@@ -10,7 +10,7 @@
 
 适用于中文公文、校领导/客户汇报、行业报告、中文学位论文和技术手册。正式Word/WPS模板优先；没有模板时选择对应格式包。
 
-## v1.2.1：先选格式，再选字号，复杂结构先分流
+## v1.2.2：先选格式，再选字号，再选自动序号
 
 本轮把反复出现的问题收敛为统一入口和真实属性检查，新增[验证记录与能力边界](docs/validation.md)。默认从标题2开始，内容标题与正文均首行缩进2字符；主标题居中。下方旧的五级展示明确演示“保留标题1”的可选模式，不代表默认必须使用标题1。
 
@@ -20,7 +20,7 @@ python scripts/pipeline.py inspect input.docx --out inventory.json
 # 先选择格式，再确认正文字号，然后形成完整roles.json
 python scripts/pipeline.py format input.docx output.docx \
   --format-profile official_cn --role-map roles.json \
-  --body-half-points 24 --report audit.json
+  --body-half-points 24 --numbering-mode automatic --report audit.json
 ```
 
 格式包选择：
@@ -35,9 +35,13 @@ python scripts/pipeline.py format input.docx output.docx \
 
 格式包定义相对字号比例。用户选正文12磅或14磅后，标题、编号、题注和其他角色按格式包自动计算。用户提供学校、单位、期刊或客户正式模板时，模板优先于通用格式包。详见[多格式路线与外部借鉴](docs/format-ecosystem.md)。
 
+每次处理前强制确认三项：文档格式、正文字号、标题是否使用自动序号。`automatic`使用带自动编号定义的预设标题样式，便于后续修改层级后自动更新；`manual`移除标题样式和段落的自动编号，只保留原文已有的人工编号。不会根据标题外观猜测用户选择。
+
 可下载[陌生合成原稿](examples/forward-case/input.docx)、[对应角色与表题清单](examples/forward-case/roles.json)、[处理结果](examples/forward-case/output.docx)。该案例经过独立评估，现已纳入回归，不作为未来的未见测试集。
 
-50项自动化测试通过不等于所有新文档自动正确。入口分别记录结构检查、内容保留和重复处理，视觉状态保持待验收；WPS逐页检查后才能交付。内容控件、修订、多节混排、合并单元格、altChunk、嵌套表格、宏和数字签名预检分流；文本框与外部关系保留但列为视觉复核警告。复杂排版请查看Skill的适用边界。
+54项自动化测试通过不等于所有新文档自动正确。入口分别记录结构检查、内容保留和重复处理，视觉状态保持待验收；WPS逐页检查后才能交付。表格本体的页面居中由`tblPr/jc=center`和实际渲染共同验收。内容控件、修订、多节混排、合并单元格、altChunk、嵌套表格、宏和数字签名预检分流；文本框与外部关系保留但列为视觉复核警告。复杂排版请查看Skill的适用边界。
+
+[v1.2.2全格式与多材料测试矩阵](docs/test-matrix-v1.2.2.md)
 
 ## 先看完整示例
 

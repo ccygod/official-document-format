@@ -1,5 +1,13 @@
 # 验证记录与能力边界
 
+## v1.2.2 · 2026年10月31日
+
+- 自动化测试：54项；新增表格级居中检查、缺失表格居中的失败回归、编号选择必填、手动编号模式和原文人工编号归一化回归。
+- 全格式矩阵：五种格式包 × 两种编号模式 × 五类材料，共50/50通过；另有正文14磅五格式矩阵和WPS批量渲染。
+- 自动编号模式检查标题是否实际继承带编号定义的预设样式；手动模式检查标题没有有效自动编号。
+- WPS输出复核窄表格已从页面左侧移动到页面中央；表题仍保持居中，单元格内短字段继续居中、长说明继续两端对齐。
+- 统一入口现在强制要求`--numbering-mode automatic|manual`，报告记录用户选择。
+
 ## v1.1.0 · 2026年10月21日
 
 本版本包含统一规则配置、源文档样式导入、处理入口、内容对账、包保留检查、重复运行检查和真实生效格式检查。结构通过报告为`structural_pass_visual_pending`，不冒充视觉通过。
@@ -27,7 +35,7 @@
 python -m pip install -r requirements.txt
 python -m unittest discover -s scripts -p 'test_*.py' -v
 python scripts/pipeline.py inspect examples/forward-case/input.docx --out inventory.json
-python scripts/pipeline.py format examples/forward-case/input.docx output.docx --role-map examples/forward-case/roles.json --body-half-points 24 --report audit.json
+python scripts/pipeline.py format examples/forward-case/input.docx output.docx --format-profile official_cn --role-map examples/forward-case/roles.json --body-half-points 24 --numbering-mode automatic --report audit.json
 ```
 
 `roles.json`包含用户/模型明确给出的表题，入口不会凭空编写。测试样例和图示为原创虚构内容。

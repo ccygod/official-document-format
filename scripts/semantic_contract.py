@@ -8,9 +8,14 @@ import re
 from pathlib import Path
 from lxml import etree
 from ooxml_model import q, ns
+from normalize_heading_markers import MARKER
+
+NUMBERING_MODES={'automatic','manual'}
 
 
-def resolve_plan(model, path):
+def resolve_plan(model, path, numbering_mode=None):
+    if numbering_mode is not None and numbering_mode not in NUMBERING_MODES:
+        raise ValueError(f'unsupported numbering mode: {numbering_mode!r}')
     plan=json.loads(Path(path).read_text())
     entries=plan['paragraphs']
     if not isinstance(entries,list) or not entries:
@@ -26,10 +31,15 @@ def resolve_plan(model, path):
             if not isinstance(occurrence,int) or occurrence<1:
                 raise ValueError('occurrence must be a positive integer')
             matches=matches[occurrence-1:occurrence]
+        if len(matches)!=1 and numbering_mode=='automatic' and role.startswith('heading-'):
+            normalized=MARKER.sub('',entry['text'].strip(),count=1).strip()
+            matches=[r for r in rows if MARKER.sub('',r['text'].strip(),count=1).strip()==normalized]
+            if 'occurrence' in entry:
+                matches=matches[entry['occurrence']-1:entry['occurrence']]
         if len(matches)!=1:
             raise ValueError(f'missing or ambiguous paragraph: {entry["text"]!r}; specify occurrence for duplicates')
         row=matches[0]
-        row['planned_numbering']=entry.get('numbering')
+        row['planned_numbering']=(('template' if numbering_mode=='automatic' else 'manual') if numbering_mode is not None else entry.get('numbering')) if role.startswith('heading-') else entry.get('numbering')
         if row['index'] in used:raise ValueError('duplicate paragraph in role map')
         used.add(row['index']);resolved.append((row,role))
     if plan.get('complete'):
@@ -38,14 +48,14 @@ def resolve_plan(model, path):
     return resolved
 
 
-def apply_role_map(model,path):
-    resolved=resolve_plan(model,path)  # validate entire plan before mutation
+def apply_role_map(model,path,numbering_mode='automatic'):
+    resolved=resolve_plan(model,path,numbering_mode)  # validate entire plan before mutation
     styles={model.role(sid):sid for sid in model.styles
             if model.styles[sid].get(q('type'))=='paragraph'}
     for row,role in resolved:
         if role not in styles:raise ValueError(f'reference lacks semantic role {role}')
         if row['role']==role:
-            if row.get('planned_numbering')=='template':
+            if row.get('planned_numbering') in {'template','manual'}:
                 pp=row['element'].find(q('pPr'))
                 if pp is not None:
                     for np in pp.findall(q('numPr')):pp.remove(np)
@@ -57,18 +67,24 @@ def apply_role_map(model,path):
         ps=etree.Element(q('pStyle'));ps.set(q('val'),styles[role]);pp.insert(0,ps)
         # Typography must come from the resolved role, not source decoration.
         for rp in p.xpath('.//w:rPr',namespaces=ns):rp.getparent().remove(rp)
-        if role=='body' or (row.get('planned_numbering')!='template' and re.match(r'^(?:[一二三四五六七八九十百]+[、.]|[（(][一二三四五六七八九十百\d]+[）)]|\d+[.、])',row['text'].strip())):
+        if role=='body' or (role.startswith('heading-') and row.get('planned_numbering')=='manual') or (row.get('planned_numbering')!='template' and re.match(r'^(?:[一二三四五六七八九十百]+[、.]|[（(][一二三四五六七八九十百\d]+[）)]|\d+[.、])',row['text'].strip())):
             np=etree.SubElement(pp,q('numPr'));etree.SubElement(np,q('numId')).set(q('val'),'0')
 
 
-def role_map_failures(model,path):
+def role_map_failures(model,path,numbering_mode='automatic'):
     try:
         failures=[]
-        for row,role in resolve_plan(model,path):
+        for row,role in resolve_plan(model,path,numbering_mode):
             if row['role']!=role:
                 failures.append(f'semantic role {row["text"]!r}: expected {role}, found {row["role"]}')
             elif role.startswith('heading-'):
-                if row.get('planned_numbering')=='template':
+                if numbering_mode=='automatic':
+                    num=row['num']
+                    if not num or num.get('ilvl')!=str(int(role.split('-')[1])-1):
+                        failures.append(f'semantic role {row["text"]!r}: template numbering is disabled or uses wrong level')
+                elif numbering_mode=='manual' and row['num'] is not None:
+                    failures.append(f'semantic role {row["text"]!r}: manual numbering still has automatic numbering')
+                elif numbering_mode is None and row.get('planned_numbering')=='template':
                     num=row['num']
                     if not num or num.get('ilvl')!=str(int(role.split('-')[1])-1):
                         failures.append(f'semantic role {row["text"]!r}: template numbering is disabled or uses wrong level')
@@ -78,6 +94,20 @@ def role_map_failures(model,path):
         return failures
     except (ValueError,KeyError,TypeError) as exc:
         return [f'invalid semantic role map: {exc}']
+
+
+def numbering_failures(model, numbering_mode):
+    if numbering_mode not in NUMBERING_MODES:
+        return [f'unsupported numbering mode: {numbering_mode!r}']
+    failures=[]
+    for row in model.paragraphs():
+        if not row['role'].startswith('heading-') or not row['text'].strip():
+            continue
+        if numbering_mode=='automatic' and row['num'] is None:
+            failures.append(f'heading paragraph {row["index"]} lacks automatic numbering')
+        if numbering_mode=='manual' and row['num'] is not None:
+            failures.append(f'heading paragraph {row["index"]} retains automatic numbering in manual mode')
+    return failures
 
 
 def materialize_indents(model,body_half,heading_chars=2):

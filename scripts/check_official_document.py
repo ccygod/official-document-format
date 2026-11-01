@@ -11,14 +11,15 @@ ZH_EN_SPACE=re.compile(r'(?<=[\u4e00-\u9fff])\s+(?=[A-Za-z])|(?<=[A-Za-z])\s+(?=
 from table_semantics import is_prose_cell
 from caption_format import CAPTION, caption_profile, effective_run, signature
 from structure_rules import structure_failures
-from semantic_contract import role_map_failures, indent_failures
+from semantic_contract import role_map_failures, indent_failures, numbering_failures
 from policy import POLICY
 from effective_format import enabled, typography_failures, paragraph_props
 from format_profiles import load_profile, role_half_points
 def bold(el): return el is not None and any(n is not None and n.get(q('val')) not in {'0','false','off'} for n in (el.find(q('b')), el.find(q('bCs'))))
-def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None, keep_toc=False, keep_bullets=False, heading_start=2, role_map=None, expected_heading_indent_chars=2, format_profile=None):
+def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None, keep_toc=False, keep_bullets=False, heading_start=2, role_map=None, expected_heading_indent_chars=2, format_profile=None, numbering_mode=None):
  m=OOXMLModel(path); failures=[]; records=list(m.paragraphs())
- if role_map: failures.extend(role_map_failures(m,role_map))
+ if role_map: failures.extend(role_map_failures(m,role_map,numbering_mode))
+ if numbering_mode is not None: failures.extend(numbering_failures(m,numbering_mode))
  failures.extend(indent_failures(m,expected_heading_indent_chars))
  failures.extend(typography_failures(m,expected_half_points,format_profile))
  failures.extend(structure_failures(m,keep_toc=keep_toc,keep_bullets=keep_bullets,heading_start=heading_start))
@@ -64,6 +65,8 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
   if first_pr is None or first_pr.find(q('cantSplit')) is None:
    failures.append(f'table {ti} header row can split across pages')
   tpr=tbl.find(q('tblPr')); borders=tpr.find(q('tblBorders')) if tpr is not None else None
+  table_jc=tpr.find(q('jc')) if tpr is not None else None
+  if table_jc is None or table_jc.get(q('val'))!='center': failures.append(f'table {ti} is not centered at table level')
   if borders is None or any(borders.find(q(edge)) is None for edge in ('top','left','bottom','right','insideH','insideV')):
    failures.append(f'table {ti} lacks explicit complete borders')
   prev=tbl.getprevious()
@@ -158,4 +161,4 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
  if failures: print('FAIL'); print('\n'.join(failures)); return 1
  print('PASS'); return 0
 if __name__=='__main__':
- ap=argparse.ArgumentParser(); ap.add_argument('docx'); ap.add_argument('--expected-half-points',type=int); ap.add_argument('--format-profile'); ap.add_argument('--require-full-pagination-controls',action='store_true'); ap.add_argument('--expected-line-multiple',type=float); ap.add_argument('--require-snap-to-grid-off',action='store_true'); ap.add_argument('--expected-before-lines',type=int); ap.add_argument('--expected-after-lines',type=int); ap.add_argument('--expected-table-after-lines',type=int); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=2); ap.add_argument('--role-map'); ap.add_argument('--expected-heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); sys.exit(main(a.docx,a.expected_half_points,a.require_full_pagination_controls,a.expected_line_multiple,a.require_snap_to_grid_off,a.expected_before_lines,a.expected_after_lines,a.expected_table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.expected_heading_indent_chars,load_profile(a.format_profile) if a.format_profile else None))
+ ap=argparse.ArgumentParser(); ap.add_argument('docx'); ap.add_argument('--expected-half-points',type=int); ap.add_argument('--format-profile'); ap.add_argument('--numbering-mode',choices=('automatic','manual')); ap.add_argument('--require-full-pagination-controls',action='store_true'); ap.add_argument('--expected-line-multiple',type=float); ap.add_argument('--require-snap-to-grid-off',action='store_true'); ap.add_argument('--expected-before-lines',type=int); ap.add_argument('--expected-after-lines',type=int); ap.add_argument('--expected-table-after-lines',type=int); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=2); ap.add_argument('--role-map'); ap.add_argument('--expected-heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); sys.exit(main(a.docx,a.expected_half_points,a.require_full_pagination_controls,a.expected_line_multiple,a.require_snap_to_grid_off,a.expected_before_lines,a.expected_after_lines,a.expected_table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.expected_heading_indent_chars,load_profile(a.format_profile) if a.format_profile else None,a.numbering_mode))

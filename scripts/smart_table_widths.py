@@ -104,6 +104,9 @@ def patch_doc(path, apply=False):
             if not apply: continue
             pr=tbl.find(q('tblPr'))
             if pr is None: pr=etree.Element(q('tblPr'));tbl.insert(0,pr)
+            jc=pr.find(q('jc'))
+            if jc is None: jc=etree.SubElement(pr,q('jc'))
+            jc.set(q('val'),'center')
             layout=pr.find(q('tblLayout'))
             if layout is None: layout=etree.SubElement(pr,q('tblLayout'))
             layout.set(q('type'),'fixed')

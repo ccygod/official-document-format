@@ -22,6 +22,9 @@ from semantic_contract import apply_role_map, materialize_indents
 from policy import POLICY
 from effective_format import normalize_text_format
 from format_profiles import role_half_points
+from semantic_contract import NUMBERING_MODES
+
+MARKER=re.compile(r'^\s*(?:(?:\(\s*\d+\s*\)|（\s*\d+\s*）)|(?:\d+\s*[\.、）)])|(?:\(\s*[一二三四五六七八九十百千万]+\s*\)|（\s*[一二三四五六七八九十百千万]+\s*）)|(?:[一二三四五六七八九十百千万]+\s*[、\.）)]))\s*')
 
 
 def ensure(parent, tag):
@@ -69,6 +72,47 @@ def heading_role(name):
     if m: return 'heading-'+m.group(1)
     if '5级标题' in name: return 'heading-5'
     return 'other'
+
+def configure_numbering(model, numbering_mode):
+    if numbering_mode not in NUMBERING_MODES:
+        raise ValueError(f'unsupported numbering mode: {numbering_mode!r}')
+    for sid,style in model.styles.items():
+        role=heading_role(style_name(style))
+        if role.startswith('heading-'):
+            pp=style.find('w:pPr',NS)
+            if pp is not None and numbering_mode=='manual':
+                for numpr in pp.findall(q('numPr')):pp.remove(numpr)
+    for row in model.paragraphs():
+        if not row['role'].startswith('heading-'):continue
+        pp=row['element'].find(q('pPr'))
+        if pp is None:continue
+        if numbering_mode=='manual':
+            for numpr in pp.findall(q('numPr')):pp.remove(numpr)
+    if numbering_mode=='automatic':
+        # The unified pipeline validates missing preset numbering after writing;
+        # the lower-level writer remains usable for isolated style tests and
+        # reports the missing numbering through the checker instead of guessing.
+        return
+
+def strip_manual_heading_markers(model):
+    """Remove visible source markers only when template numbering replaces them."""
+    changes=[]
+    for row in model.paragraphs():
+        if not row['role'].startswith('heading-') or row['num'] is None:
+            continue
+        nodes=row['element'].xpath('.//w:t',namespaces=NS)
+        full=''.join((node.text or '') for node in nodes)
+        match=MARKER.match(full)
+        if not match: continue
+        left=len(match.group(0))
+        for node in nodes:
+            text=node.text or ''
+            take=min(left,len(text)); node.text=text[take:]; left-=take
+            if left==0:
+                if node.text and node.text[0].isspace(): node.set('{http://www.w3.org/XML/1998/namespace}space','preserve')
+                break
+        changes.append({'index':row['index'],'marker':match.group(0)})
+    return changes
 
 def set_style_size_and_spacing(styles, body_half, line, before_lines=0, after_lines=25, heading_indent_chars=2, format_profile=None):
     role_to_id={}
@@ -176,6 +220,9 @@ def patch_tables(root, full_pagination, styles):
     if root.xpath(".//w:tbl",namespaces=NS) and not {"表格","表格正文"} <= named.keys():
         raise ValueError("Missing semantic table paragraph styles")
     for tbl in root.xpath('.//w:tbl',namespaces=NS):
+        tpr=tbl.find(q('tblPr'))
+        if tpr is None: tpr=etree.Element(q('tblPr')); tbl.insert(0,tpr)
+        table_jc=ensure(tpr,'jc'); table_jc.set(q('val'),'center')
         for row_i,row in enumerate(tbl.findall(q('tr'))):
             trpr=row.find(q('trPr'))
             if trpr is None: trpr=etree.Element(q('trPr')); row.insert(0,trpr)
@@ -195,14 +242,17 @@ def patch_tables(root, full_pagination, styles):
                         for tag in ('widowControl','keepNext','keepLines'): set_on(pp,tag)
                     else:ensure(pp,'keepNext').set(q('val'),'0')
 
-def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_lines=25,table_after_lines=50,keep_toc=False,keep_bullets=False,heading_start=2,role_map=None,heading_indent_chars=2,format_profile=None):
+def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_lines=25,table_after_lines=50,keep_toc=False,keep_bullets=False,heading_start=2,role_map=None,heading_indent_chars=2,format_profile=None,numbering_mode='automatic',normalize_heading_markers=False):
     line=round(float(line_multiple)*240)
     with ZipFile(src,'r') as z: files={n:z.read(n) for n in z.namelist()}
     model=OOXMLModel(src)
     normalize_structure(model,keep_toc=keep_toc,keep_bullets=keep_bullets,heading_start=heading_start)
     if role_map:
-        apply_role_map(model,role_map)
+        apply_role_map(model,role_map,numbering_mode)
         normalize_structure(model,keep_toc=keep_toc,keep_bullets=keep_bullets,heading_start=heading_start)
+    configure_numbering(model,numbering_mode)
+    if numbering_mode=='automatic' and normalize_heading_markers:
+        strip_manual_heading_markers(model)
     styles=model.styles_xml; style_map=model.styles
     # Fixed-font template import must not inherit source docDefaults theme fonts.
     for fonts in styles.xpath("./w:docDefaults/w:rPrDefault/w:rPr/w:rFonts",namespaces=NS):
@@ -210,7 +260,7 @@ def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_li
             if "theme" in etree.QName(attr).localname.lower():del fonts.attrib[attr]
     role_to_id=set_style_size_and_spacing(style_map,body_half,line,before_lines,after_lines,heading_indent_chars,format_profile)
     files['word/styles.xml']=etree.tostring(styles,xml_declaration=True,encoding='UTF-8',standalone=True)
-    if 'word/numbering.xml' in files:
+    if 'word/numbering.xml' in files and numbering_mode=='automatic':
         num=etree.fromstring(files['word/numbering.xml'])
         set_numbering.used_heading_levels={(r['num']['abstractNumId'],r['num']['ilvl']) for r in model.paragraphs() if r['role'].startswith('heading-') and r['num']}
         set_numbering(num,style_map,body_half,role_to_id,format_profile)
@@ -234,4 +284,4 @@ def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_li
     tmp.replace(out)
 
 if __name__=='__main__':
-    ap=ArgumentParser(); ap.add_argument('input'); ap.add_argument('output'); ap.add_argument('--body-half-points',type=int,required=True); ap.add_argument('--format-profile'); ap.add_argument('--line-multiple',type=float,default=POLICY['line_multiple']); ap.add_argument('--before-lines',type=int,default=POLICY['before_lines']); ap.add_argument('--after-lines',type=int,default=POLICY['after_lines']); ap.add_argument('--table-after-lines',type=int,default=POLICY['table_after_lines']); ap.add_argument('--full-pagination-controls',action='store_true'); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=POLICY['heading_start']); ap.add_argument('--role-map'); ap.add_argument('--heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); from format_profiles import load_profile; main(a.input,a.output,a.body_half_points,a.line_multiple,a.full_pagination_controls,a.before_lines,a.after_lines,a.table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.heading_indent_chars,load_profile(a.format_profile) if a.format_profile else None)
+    ap=ArgumentParser(); ap.add_argument('input'); ap.add_argument('output'); ap.add_argument('--body-half-points',type=int,required=True); ap.add_argument('--format-profile'); ap.add_argument('--numbering-mode',choices=sorted(NUMBERING_MODES),default='automatic'); ap.add_argument('--normalize-heading-markers',action='store_true'); ap.add_argument('--line-multiple',type=float,default=POLICY['line_multiple']); ap.add_argument('--before-lines',type=int,default=POLICY['before_lines']); ap.add_argument('--after-lines',type=int,default=POLICY['after_lines']); ap.add_argument('--table-after-lines',type=int,default=POLICY['table_after_lines']); ap.add_argument('--full-pagination-controls',action='store_true'); ap.add_argument('--keep-toc',action='store_true'); ap.add_argument('--keep-bullets',action='store_true'); ap.add_argument('--heading-start',type=int,choices=range(1,6),default=POLICY['heading_start']); ap.add_argument('--role-map'); ap.add_argument('--heading-indent-chars',type=float,default=POLICY['heading_indent_chars']); a=ap.parse_args(); from format_profiles import load_profile; main(a.input,a.output,a.body_half_points,a.line_multiple,a.full_pagination_controls,a.before_lines,a.after_lines,a.table_after_lines,a.keep_toc,a.keep_bullets,a.heading_start,a.role_map,a.heading_indent_chars,load_profile(a.format_profile) if a.format_profile else None,a.numbering_mode,a.normalize_heading_markers)
