@@ -1,8 +1,8 @@
 > 图表和高级OOXML细则。当前默认参数以../config/official.json为准，统一入口见../SKILL.md；旧的手工处理命令仅供特殊结构处理参考。
 
 ---
-name: official-document-format
-description: "Use when the user selects 公文格式skill（official document skill）, needs WPS-compatible DOCX formatting, or invokes $official-document-format."
+name: multi-document-format
+description: "Use when the user selects a document format, needs WPS-compatible DOCX formatting, or invokes $multi-document-format. $official-document-format remains a compatibility alias."
 ---
 
 # 公文格式skill（official document skill）

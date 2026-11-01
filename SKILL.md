@@ -1,6 +1,6 @@
 ---
-name: official-document-format
-description: "按保留母版处理中文Word公文、汇报、行业报告、论文和技术手册，先路由格式和字号，再检查真实生效样式、编号、缩进和图表。用户选择文档格式或调用$official-document-format时使用。"
+name: multi-document-format
+description: "按保留母版处理中文Word公文、汇报、行业报告、论文和技术手册，先路由格式和字号，再检查真实生效样式、编号、缩进和图表。用户选择文档格式或调用$multi-document-format时使用；$official-document-format作为兼容别名保留。"
 ---
 
 # 多格式文档格式Skill

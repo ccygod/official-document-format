@@ -1,5 +1,12 @@
 # 更新记录
 
+## 1.2.3 · 2026年11月1日
+
+- 当前技能标识改为`multi-document-format`，`official-document-format`保留为兼容别名；仓库URL和历史下载链接继续有效。
+- 第三轮WebSearch补充office-docx、docx-mcp、docx-master和ooxmlsdk的底层OOXML规则，新增样式/编号定义、pPr元素顺序、字段/批注/宏/节和表格网格的实现边界说明。
+- 增加`pPr`属性顺序规范化与负例检查，减少WPS/Word因OOXML元素顺序进入修复模式的风险。
+- 全格式矩阵复跑50/50通过；自动化测试增至55项，五种格式WPS批量渲染通过。
+
 ## 1.2.2 · 2026年10月31日
 
 - 修复窄表格只做单元格居中、表格本体仍贴左的问题：写入并检查表格级`tblPr/jc=center`，WPS实渲染已回归。

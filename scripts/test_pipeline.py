@@ -36,8 +36,23 @@ class PipelineTests(unittest.TestCase):
   with ZipFile(self.out,'w',ZIP_DEFLATED) as z:
    for n,b in files.items():z.writestr(n,b)
   with contextlib.redirect_stdout(io.StringIO()) as log:
-   self.assertEqual(check(self.out,role_map=self.plan,numbering_mode='automatic'),1)
+   self.assertEqual(check(self.out,role_map=self.plan,heading_start=1,numbering_mode='automatic'),1)
   self.assertIn('not centered at table level',log.getvalue())
+
+ def test_checker_rejects_out_of_order_paragraph_properties(self):
+  execute(self.src,self.out,self.plan,24,self.report,heading_start=1,numbering_mode='automatic')
+  with ZipFile(self.out) as z:files={n:z.read(n) for n in z.namelist()}
+  doc=E.fromstring(files['word/document.xml'])
+  p=next(p for p in doc.xpath('.//w:body/w:p',namespaces=ns) if p.find('./'+q('pPr')+'/'+q('spacing')) is not None and p.find('./'+q('pPr')+'/'+q('ind')) is not None)
+  ppr=p.find(q('pPr')); spacing=ppr.find(q('spacing')); ind=ppr.find(q('ind'))
+  if spacing is not None and ind is not None:
+   ppr.remove(spacing); ppr.insert(list(ppr).index(ind)+1,spacing)
+  files['word/document.xml']=E.tostring(doc)
+  with ZipFile(self.out,'w',ZIP_DEFLATED) as z:
+   for n,b in files.items():z.writestr(n,b)
+  with contextlib.redirect_stdout(io.StringIO()) as log:
+   self.assertEqual(check(self.out,role_map=self.plan,heading_start=1,numbering_mode='automatic'),1)
+  self.assertIn('paragraph property order',log.getvalue())
 
  def test_cli_requires_explicit_numbering_choice(self):
   proc=subprocess.run([sys.executable,str(Path(__file__).with_name('pipeline.py')),'format',str(self.src),str(self.out),'--format-profile','official_cn','--role-map',str(self.plan),'--body-half-points','24','--report',str(self.report)],capture_output=True,text=True)

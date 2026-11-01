@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "profile": "official-document-format",
+  "profile": "multi-document-format",
   "line_multiple": 1.35,
   "before_lines": 0,
   "after_lines": 25,

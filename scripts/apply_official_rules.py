@@ -23,6 +23,7 @@ from policy import POLICY
 from effective_format import normalize_text_format
 from format_profiles import role_half_points
 from semantic_contract import NUMBERING_MODES
+from ppr_order import canonicalize_ppr
 
 MARKER=re.compile(r'^\s*(?:(?:\(\s*\d+\s*\)|（\s*\d+\s*）)|(?:\d+\s*[\.、）)])|(?:\(\s*[一二三四五六七八九十百千万]+\s*\)|（\s*[一二三四五六七八九十百千万]+\s*）)|(?:[一二三四五六七八九十百千万]+\s*[、\.）)]))\s*')
 
@@ -213,7 +214,9 @@ def patch_paragraph_parts(files, line, full_pagination, before_lines=0, after_li
             else:
                 for tag in ('widowControl','keepLines'): set_on(pp,tag)
             changed=True
-        if changed: files[name]=etree.tostring(root,xml_declaration=True,encoding='UTF-8',standalone=True)
+        if changed:
+            for ppr in root.xpath('.//w:pPr',namespaces=NS): canonicalize_ppr(ppr)
+            files[name]=etree.tostring(root,xml_declaration=True,encoding='UTF-8',standalone=True)
 
 def patch_tables(root, full_pagination, styles):
     named={style_name(st):sid for sid,st in styles.items() if st.get(q("type"))=="paragraph"}
@@ -259,6 +262,7 @@ def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_li
         for attr in list(fonts.attrib):
             if "theme" in etree.QName(attr).localname.lower():del fonts.attrib[attr]
     role_to_id=set_style_size_and_spacing(style_map,body_half,line,before_lines,after_lines,heading_indent_chars,format_profile)
+    for ppr in styles.xpath('.//w:pPr',namespaces=NS): canonicalize_ppr(ppr)
     files['word/styles.xml']=etree.tostring(styles,xml_declaration=True,encoding='UTF-8',standalone=True)
     if 'word/numbering.xml' in files and numbering_mode=='automatic':
         num=etree.fromstring(files['word/numbering.xml'])
@@ -276,6 +280,7 @@ def main(src,dst,body_half,line_multiple,full_pagination,before_lines=0,after_li
                 ensure(row['element'].find(q('pPr')),'keepNext').set(q('val'),'0')
     patch_tables(doc,full_pagination,style_map)
     normalize_captions(doc,style_map)
+    for ppr in doc.xpath('.//w:pPr',namespaces=NS): canonicalize_ppr(ppr)
     files['word/document.xml']=etree.tostring(doc,xml_declaration=True,encoding='UTF-8',standalone=True)
     patch_paragraph_parts(files,line,full_pagination,before_lines,after_lines,table_after_lines)
     out=Path(dst); tmp=out.with_name(out.name+'.tmp')

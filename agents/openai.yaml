@@ -1,7 +1,7 @@
 interface:
-  display_name: "公文格式skill"
-  short_description: "按保留母版生成并检查Word与WPS兼容公文"
+  display_name: "多格式文档skill"
+  short_description: "按保留母版生成并检查Word与WPS兼容文档"
   icon_large: "./assets/preview.png"
-  default_prompt: "请使用$official-document-format，确认正文字号后，按保留母版处理内容与格式，完成结构检查和实际页面验收。"
+  default_prompt: "请使用$multi-document-format，确认文档格式、正文字号和标题编号模式后，按保留母版处理内容与格式，完成结构检查和实际页面验收。"
 policy:
   allow_implicit_invocation: true

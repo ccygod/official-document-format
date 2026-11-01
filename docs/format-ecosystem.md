@@ -22,7 +22,18 @@
 | [Microsoft Agent Academy document skill](https://github.com/microsoft/agent-academy/blob/main/docs/operative-nextgen/06-document-skill/index.md) | 内容采集、JSON结构化、脚本生成和证据等级分层，减少模型直接改Word的自由度 | 先生成完整`roles.json`，再由确定性脚本执行；报告明确“结构通过、视觉待验收” |
 | [wksudud/format-thesis-docx](https://github.com/wksudud/format-thesis-docx/blob/main/SKILL.md) / [h46373824-tech/format-thesis-docx-skill](https://github.com/h46373824-tech/format-thesis-docx-skill) | 先提取要求和审计，再在副本执行；低置信度规则暂停，保留未解决项和格式清单 | 格式包必须显式选择；不确定标题层级与复杂对象不通过“猜测”放行，报告保留可追溯字段 |
 
+第三轮底层OOXML对照又补充了几条会影响WPS稳定性的规则：
+
+| 来源 | 底层规则 | 本仓落地 |
+|---|---|---|
+| [arih04x/office-skills/office-docx](https://github.com/arih04x/office-skills/blob/main/office-docx/SKILL.md) | 源文件副本、模板样式/主题/编号迁移、OpenXML包检查和最终独立渲染要分层；样式应先定义再通过style ID使用 | 统一入口始终写副本；格式包、母版导入、结构检查、WPS渲染分成独立证据层 |
+| [SecurityRonin/docx-mcp](https://github.com/SecurityRonin/docx-mcp/blob/main/docx_mcp/skill/SKILL.md) | `w:pPr`子元素有规范顺序；修订、批注和编号不能依赖高层库的隐式行为；标题编号应来自多级编号系统 | 增加`pPr`顺序规范化和顺序负例检查；自动编号使用母版编号定义，人工编号与自动编号重复时先归一化 |
+| [hawa130/docx-master](https://github.com/hawa130/docx-master-src) | overview/inspect_blockers/inspect_style_def/inspect_table/validate分工具分层；样式指纹、模式规则和只读审计先于写入 | `inspect`、全Story inventory、复杂对象分流、角色清单、确定性执行和结构报告形成同一条门链 |
+| [KaiserY/ooxmlsdk COMPATIBILITY](https://github.com/KaiserY/ooxmlsdk/blob/main/COMPATIBILITY.md) | 字段、节、批注、宏、keep属性、样式继承、合并单元格和编号都应按可回写能力逐项记录 | 这些对象进入保留警告或专门处理清单；不把“Word能打开”当成结构保真证明 |
+
 这些仓库的许可证和目标范围不同，本项目只吸收公开的流程思想；没有复制代码、模板或受限素材。OOXML语义仍以[ECMA-376](https://ecma-international.org/publications-and-standards/standards/ecma-376/)和Microsoft对`keepNext`、主题字体及`rFonts`优先级的说明为准。
+
+表格本体、表格网格和列宽的关系进一步参照了[Microsoft WordprocessingML tables](https://learn.microsoft.com/en-us/office/open-xml/word/working-with-wordprocessingml-tables)；样式编号定义的优先级参照了[ParagraphStyleIdInLevel](https://learn.microsoft.com/en-gb/dotnet/api/documentformat.openxml.wordprocessing.paragraphstyleidinlevel?view=openxml-2.13.1)。
 
 ## 当前格式包
 

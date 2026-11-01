@@ -15,6 +15,7 @@ from semantic_contract import role_map_failures, indent_failures, numbering_fail
 from policy import POLICY
 from effective_format import enabled, typography_failures, paragraph_props
 from format_profiles import load_profile, role_half_points
+from ppr_order import ppr_order_failures
 def bold(el): return el is not None and any(n is not None and n.get(q('val')) not in {'0','false','off'} for n in (el.find(q('b')), el.find(q('bCs'))))
 def main(path, expected_half_points=None, require_full_pagination_controls=False, expected_line_multiple=None, require_snap_to_grid_off=False, expected_before_lines=None, expected_after_lines=None, expected_table_after_lines=None, keep_toc=False, keep_bullets=False, heading_start=2, role_map=None, expected_heading_indent_chars=2, format_profile=None, numbering_mode=None):
  m=OOXMLModel(path); failures=[]; records=list(m.paragraphs())
@@ -23,6 +24,7 @@ def main(path, expected_half_points=None, require_full_pagination_controls=False
  failures.extend(indent_failures(m,expected_heading_indent_chars))
  failures.extend(typography_failures(m,expected_half_points,format_profile))
  failures.extend(structure_failures(m,keep_toc=keep_toc,keep_bullets=keep_bullets,heading_start=heading_start))
+ failures.extend(ppr_order_failures([(m.styles_xml,'style'),(m.doc,'document')]))
  if require_full_pagination_controls:
   for i,p in enumerate(m.doc.xpath('.//w:body//w:p',namespaces=ns)):
    pp=p.find(q('pPr'))

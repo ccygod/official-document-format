@@ -21,7 +21,7 @@ def main():
     p.add_argument('--host',choices=['codex','claude'],default='codex')
     p.add_argument('--dest',type=Path,help='Explicit skill directory, including the skill name')
     a=p.parse_args();source=Path(__file__).resolve().parents[1]
-    destination=a.dest or Path.home()/('.codex' if a.host=='codex' else '.claude')/'skills'/source.name
+    destination=a.dest or Path.home()/('.codex' if a.host=='codex' else '.claude')/'skills'/'multi-document-format'
     try: print(f"Installed: {install(source,destination)}")
     except (OSError,ValueError) as e:p.exit(1,f"ERROR: {e}\n")
 if __name__=='__main__':main()
