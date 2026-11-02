@@ -49,4 +49,12 @@ class ReleasePipelineTests(unittest.TestCase):
             self.assertFalse(any(n.endswith('.odttf') for n in z.namelist()))
             text='\n'.join(z.read(n).decode('utf-8',errors='ignore') for n in z.namelist() if n.endswith('.xml'))
             for term in ['/Users/apple','天津光泰','西青区','KSOTemplateDocerSaveRecord']:self.assertNotIn(term,text)
+
+    def test_skill_entrypoint_requires_format_size_and_numbering_before_work(self):
+        skill=(ROOT/'SKILL.md').read_text(encoding='utf-8')
+        prompt=(ROOT/'agents/openai.yaml').read_text(encoding='utf-8')
+        self.assertIn('首轮交互门禁',skill)
+        self.assertIn('不能读取、检查、生成角色清单或修改DOCX',skill)
+        self.assertIn('文档风格',prompt)
+        self.assertIn('三项确认前不要读取或修改DOCX',prompt)
 if __name__=='__main__':unittest.main()

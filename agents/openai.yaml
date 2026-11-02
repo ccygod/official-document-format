@@ -2,6 +2,6 @@ interface:
   display_name: "多格式文档skill"
   short_description: "按保留母版生成并检查Word与WPS兼容文档"
   icon_large: "./assets/preview.png"
-  default_prompt: "请使用$multi-document-format，确认文档格式、正文字号和标题编号模式后，按保留母版处理内容与格式，完成结构检查和实际页面验收。"
+  default_prompt: "请先回答三个前置问题：文档风格（official_cn公文、briefing_cn汇报、industry_report_cn行业报告、academic_thesis_cn论文、technical_manual_cn技术手册或正式模板）、正文字号、标题编号（automatic自动序号或manual手动编号）。三项确认前不要读取或修改DOCX；确认后再使用$multi-document-format按保留母版处理，并完成结构检查和实际页面验收。"
 policy:
   allow_implicit_invocation: true
